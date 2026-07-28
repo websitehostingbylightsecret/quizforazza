@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seberapa Kenal Kamu Sama Aku? ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ----- RESET & GLOBAL ----- */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --white: #FFFFFF;
+            --pink-soft: #F8D7E8;
+            --pink-light: #FFDCE8;
+            --pink-mid: #F5B7D0;
+            --pink-dark: #E895B8;
+            --shadow: 0 12px 40px rgba(232, 149, 184, 0.18);
+            --shadow-hover: 0 18px 50px rgba(232, 149, 184, 0.26);
+            --radius: 28px;
+            --radius-sm: 16px;
+            --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            --font: 'Poppins', 'Inter', sans-serif;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: var(--font);
+            background: var(--white);
+            color: #2d1b26;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(145deg, #fff9fb 0%, #fceef4 100%);
+        }
+
+        /* ----- SCROLLBAR ----- */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--pink-soft);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--pink-mid);
+            border-radius: 10px;
+        }
+
+        /* ----- WRAPPER CARD ----- */
+        .app-wrapper {
+            width: 100%;
+            max-width: 720px;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 36px 32px 40px;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow var(--transition);
+            min-height: 500px;
+            backdrop-filter: blur(2px);
+            border: 1px solid rgba(255, 220, 232, 0.30);
+        }
+
+        .app-wrapper:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* ----- FLOATING HEARTS BACKGROUND ----- */
+        .hearts-bg {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .hearts-bg .heart {
+            position: absolute;
+            color: rgba(245, 183, 208, 0.15);
+            font-size: 22px;
+            user-select: none;
+            animation: floatHeart linear infinite;
+        }
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(120%) scale(0.6) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-40px) scale(1.1) rotate(20deg);
+                opacity: 0;
+            }
+        }
+
+        /* ----- CONTENT (di atas hearts) ----- */
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ----- TYPOGRAPHY ----- */
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            color: #2d1b26;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+        .title .heart-icon {
+            color: #e06a8a;
+            display: inline-block;
+            animation: pulseHeart 1.8s ease-in-out infinite;
+        }
+        @keyframes pulseHeart {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #5a3f4b;
+            text-align: center;
+            max-width: 520px;
+            margin: 14px auto 0;
+            line-height: 1.7;
+            opacity: 0.85;
+        }
+
+        .part-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--pink-dark);
+            background: var(--pink-soft);
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            margin-bottom: 12px;
+        }
+
+        .question-number {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #7a5a68;
+            margin-bottom: 6px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1f141a;
+            line-height: 1.5;
+            margin-bottom: 18px;
+            min-height: 3.2rem;
+        }
+
+        /* ----- INPUT ----- */
+        .answer-input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            font-family: var(--font);
+            border: 2px solid var(--pink-soft);
+            border-radius: var(--radius-sm);
+            background: #fefafc;
+            transition: border var(--transition), box-shadow var(--transition);
+            resize: vertical;
+            min-height: 60px;
+            max-height: 180px;
+            color: #1f141a;
+            line-height: 1.5;
+        }
+        .answer-input:focus {
+            outline: none;
+            border-color: var(--pink-mid);
+            box-shadow: 0 0 0 5px rgba(245, 183, 208, 0.20);
+        }
+        .answer-input::placeholder {
+            color: #b89ba8;
+            font-weight: 300;
+            font-size: 0.92rem;
+        }
+        .answer-input.error {
+            border-color: #e06a8a;
+            box-shadow: 0 0 0 5px rgba(224, 106, 138, 0.15);
+        }
+
+        /* ----- PROGRESS BAR ----- */
+        .progress-wrap {
+            margin: 22px 0 20px;
+            position: relative;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #f0dce6;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--pink-light), var(--pink-mid), var(--pink-dark));
+            border-radius: 20px;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .progress-text {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #7a5a68;
+            margin-top: 8px;
+            text-align: right;
+            letter-spacing: 0.3px;
+        }
+
+        /* ----- NAVIGATION ----- */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .nav-buttons button {
+            flex: 1;
+            padding: 14px 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: var(--font);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .nav-buttons button:active {
+            transform: scale(0.96);
+        }
+
+        .btn-prev {
+            background: #f5eaef;
+            color: #5a3f4b;
+        }
+        .btn-prev:hover:not(:disabled) {
+            background: #ecdaE4;
+        }
+        .btn-prev:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, var(--pink-light), var(--pink-mid));
+            color: #2d1b26;
+            box-shadow: 0 4px 14px rgba(245, 183, 208, 0.30);
+        }
+        .btn-next:hover:not(:disabled) {
+            box-shadow: 0 6px 22px rgba(245, 183, 208, 0.45);
+            transform: translateY(-2px);
+        }
+        .btn-next:disabled {
+            opacity: 0.40;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--pink-light), var(--pink-mid));
+            color: #2d1b26;
+            padding: 16px 36px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: var(--font);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+            box-shadow: 0 6px 24px rgba(245, 183, 208, 0.30);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 34px rgba(245, 183, 208, 0.45);
+        }
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
+        .btn-secondary {
+            background: #f5eaef;
+            color: #5a3f4b;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: var(--font);
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: background var(--transition), transform var(--transition);
+        }
+        .btn-secondary:hover {
+            background: #ecdaE4;
+        }
+        .btn-secondary:active {
+            transform: scale(0.96);
+        }
+
+        /* ----- POPUP / MODAL ----- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(45, 27, 38, 0.50);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.45s ease, visibility 0.45s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background: var(--white);
+            border-radius: var(--radius);
+            max-width: 520px;
+            width: 100%;
+            padding: 40px 34px 34px;
+            box-shadow: 0 30px 70px rgba(45, 27, 38, 0.20);
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+            opacity: 0;
+            text-align: center;
+        }
+        .modal-overlay.active .modal-box {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .modal-box .modal-icon {
+            font-size: 2.6rem;
+            margin-bottom: 6px;
+        }
+        .modal-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2d1b26;
+            margin-bottom: 12px;
+        }
+        .modal-box p {
+            font-size: 0.98rem;
+            color: #4d3542;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        .modal-box .btn-primary {
+            width: 100%;
+        }
+
+        /* ----- PAGES (show/hide) ----- */
+        .page {
+            display: none;
+            animation: fadeSlide 0.5s ease forwards;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ----- HOME PAGE ----- */
+        .home-page .title-wrap {
+            text-align: center;
+            padding: 20px 0 8px;
+        }
+        .home-page .title {
+            font-size: 2.2rem;
+        }
+        .home-page .subtitle {
+            font-size: 1.05rem;
+            margin: 18px auto 32px;
+        }
+        .home-page .btn-primary {
+            margin: 0 auto;
+            display: flex;
+            width: fit-content;
+        }
+
+        /* ----- END PAGE ----- */
+        .end-page .end-icon {
+            font-size: 3.4rem;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .end-page .end-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            text-align: center;
+            color: #2d1b26;
+            margin-bottom: 12px;
+        }
+        .end-page .end-message {
+            font-size: 1rem;
+            color: #4d3542;
+            line-height: 1.8;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto 28px;
+        }
+        .end-page .btn-primary {
+            margin: 0 auto;
+            display: flex;
+            width: fit-content;
+        }
+
+        /* ----- CONFETTI CONTAINER ----- */
+        .confetti-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 14px;
+            top: -20px;
+            opacity: 0;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(110vh) rotate(720deg) scale(0.3);
+            }
+        }
+
+        /* ----- FLOATING HEARTS (end page) ----- */
+        .end-hearts {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+        .end-hearts .float-heart {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(224, 106, 138, 0.35);
+            animation: floatUp linear forwards;
+            user-select: none;
+        }
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100%) scale(0.4) rotate(0deg);
+            }
+            15% {
+                opacity: 1;
+            }
+            85% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-20vh) scale(1.2) rotate(25deg);
+            }
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 600px) {
+            .app-wrapper {
+                padding: 24px 18px 30px;
+                border-radius: 24px;
+                min-height: 420px;
+            }
+            .title {
+                font-size: 1.5rem;
+            }
+            .home-page .title {
+                font-size: 1.6rem;
+            }
+            .question-text {
+                font-size: 1.05rem;
+                min-height: 2.8rem;
+            }
+            .answer-input {
+                font-size: 0.95rem;
+                padding: 12px 14px;
+                min-height: 50px;
+            }
+            .nav-buttons button {
+                font-size: 0.85rem;
+                padding: 12px 8px;
+            }
+            .modal-box {
+                padding: 30px 20px 26px;
+            }
+            .modal-box h3 {
+                font-size: 1.1rem;
+            }
+            .end-page .end-title {
+                font-size: 1.3rem;
+            }
+            .btn-primary {
+                font-size: 1rem;
+                padding: 14px 24px;
+            }
+            .part-label {
+                font-size: 0.65rem;
+                padding: 3px 12px;
+            }
+            .progress-text {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .app-wrapper {
+                padding: 18px 12px 22px;
+                border-radius: 20px;
+            }
+            .title {
+                font-size: 1.2rem;
+            }
+            .home-page .title {
+                font-size: 1.3rem;
+            }
+            .question-text {
+                font-size: 0.95rem;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .nav-buttons button {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== CONFETTI CONTAINER ====== -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <!-- ====== END HEARTS ====== -->
+    <div class="end-hearts" id="endHearts"></div>
+
+    <!-- ====== MODAL OVERLAY (Sebelum Memulai) ====== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-icon">💕</div>
+            <h3>Sebelum Memulai</h3>
+            <p>
+                Jawablah semua pertanyaan dengan sungguh-sungguh.<br /><br />
+                Website ini bukan mencari jawaban yang sempurna, tetapi ingin mengetahui seberapa dalam kamu mengenalku.<br /><br />
+                Tidak apa-apa jika jawabanmu salah.<br />
+                Yang penting kamu benar-benar mencoba mengingat.
+            </p>
+            <button class="btn-primary" id="modalStartBtn">💕 Mulai</button>
+        </div>
+    </div>
+
+    <!-- ====== APP WRAPPER ====== -->
+    <div class="app-wrapper" id="appWrapper">
+
+        <!-- Floating hearts background -->
+        <div class="hearts-bg" id="heartsBg"></div>
+
+        <div class="content">
+
+            <!-- ===== HOME PAGE ===== -->
+            <div class="page active home-page" id="homePage">
+                <div class="title-wrap">
+                    <div class="title">
+                        <span class="heart-icon">❤️</span> Seberapa Kenal Kamu Sama Aku? <span class="heart-icon">❤️</span>
+                    </div>
+                    <p class="subtitle">
+                        Website ini dibuat khusus untuk melihat seberapa dalam kamu mengenalku, bukan hanya tentang hal-hal sederhana, tetapi juga tentang perasaan, kebiasaan, dan siapa diriku sebenarnya.
+                    </p>
+                </div>
+                <div style="text-align:center; margin-top: 12px;">
+                    <button class="btn-primary" id="startBtn">💕 Mulai</button>
+                </div>
+            </div>
+
+            <!-- ===== QUIZ PAGE ===== -->
+            <div class="page" id="quizPage">
+                <div class="part-label" id="partLabel">Bagian 1 — Tentang Aku</div>
+                <div class="question-number" id="questionNumber">Pertanyaan 1 / 55</div>
+                <div class="question-text" id="questionText">Apa warna favoritku?</div>
+
+                <textarea class="answer-input" id="answerInput" placeholder="Ketik jawabanmu di sini..." rows="2"></textarea>
+
+                <div class="progress-wrap">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+
+                <div class="nav-buttons">
+                    <button class="btn-prev" id="prevBtn" disabled>← Sebelumnya</button>
+                    <button class="btn-next" id="nextBtn">Selanjutnya →</button>
+                </div>
+            </div>
+
+<!-- ===== END PAGE ===== -->
+            <div class="page end-page" id="endPage">
+                <div class="end-icon">🌸</div>
+                <div class="end-title">Terima kasih 💕</div>
+                <div class="end-message">
+                    Terima kasih sudah meluangkan waktu menjawab semuanya.<br /><br />
+                    Website ini bukan dibuat untuk menguji siapa yang benar atau salah.<br /><br />
+                    Aku hanya ingin tahu seberapa dalam kamu mengenalku.<br /><br />
+                    Kalau ada jawabanmu yang belum tepat, semoga setelah ini kita bisa saling mengenal lebih baik lagi.<br /><br />
+                    Karena bagiku, hubungan yang indah bukan tentang siapa yang paling sempurna, melainkan siapa yang terus belajar memahami pasangannya.
+                </div>
+                <button class="btn-primary" id="submitBtn">💕 Kirim Jawaban</button>
+                <button class="btn-primary" id="sendWaBtn" style="margin-top:12px; background:#25D366;">📲 Kirim Jawaban ke WhatsApp</button>
+            </div>
+
+        </div><!-- /content -->
+    </div><!-- /app-wrapper -->
+
+    <script>
+        // ============================================================
+        //  DATA PERTANYAAN (55)
+        // ============================================================
+        const questions = [
+            // Bagian 1 — Tentang Aku (1-10)
+            { id: 1, part: 1, text: "Apa warna favoritku?" },
+            { id: 2, part: 1, text: "Apa makanan favoritku?" },
+            { id: 3, part: 1, text: "Tanggal lahirku?" },
+            { id: 4, part: 1, text: "Minuman favoritku?" },
+            { id: 5, part: 1, text: "Game favoritku?" },
+            { id: 6, part: 1, text: "Aku lebih suka begadang atau tidur cepat?" },
+            { id: 7, part: 1, text: "Aku paling suka dipanggil apa?" },
+            { id: 8, part: 1, text: "Hewan favoritku?" },
+            { id: 9, part: 1, text: "Film, anime, atau serial favoritku?" },
+            { id: 10, part: 1, text: "Aku lebih suka pantai atau gunung?" },
+            // Bagian 2 — Kebiasaan (11-20)
+            { id: 11, part: 2, text: "Kebiasaan apa yang paling sering aku lakukan?" },
+            { id: 12, part: 2, text: "Kalau lagi gabut biasanya aku ngapain?" },
+            { id: 13, part: 2, text: "Hal kecil apa yang paling bikin aku bahagia?" },
+            { id: 14, part: 2, text: "Hal kecil apa yang paling bikin aku kesal?" },
+            { id: 15, part: 2, text: "Aku tipe orang hemat atau boros?" },
+            { id: 16, part: 2, text: "Aku lebih suka chat atau telepon?" },
+            { id: 17, part: 2, text: "Aku lebih suka dirayakan ramai-ramai atau berdua saja?" },
+            { id: 18, part: 2, text: "Aku lebih sering mengalah atau mempertahankan pendapat?" },
+            { id: 19, part: 2, text: "Menurutmu apa kelebihan terbesarku?" },
+            { id: 20, part: 2, text: "Apa kekurangan yang menurutmu aku punya?" },
+            // Bagian 3 — Mengenal Perasaanku (21-30)
+            { id: 21, part: 3, text: "Kalau aku lagi sedih biasanya aku seperti apa?" },
+            { id: 22, part: 3, text: "Kalau aku kecewa biasanya bagaimana?" },
+            { id: 23, part: 3, text: "Kalau aku marah biasanya bagaimana?" },
+            { id: 24, part: 3, text: "Kalau aku stres biasanya apa yang aku butuhkan?" },
+            { id: 25, part: 3, text: "Apa tanda kalau aku sedang overthinking?" },
+            { id: 26, part: 3, text: "Kalau aku capek secara mental biasanya bagaimana?" },
+            { id: 27, part: 3, text: "Apa yang bisa membuatku tenang lagi?" },
+            { id: 28, part: 3, text: "Hal apa yang membuatku merasa tidak dihargai?" },
+            { id: 29, part: 3, text: "Menurutmu apa ketakutan terbesarku?" },
+            { id: 30, part: 3, text: "Apa yang membuatku merasa dicintai?" },
+            // Bagian 4 — Deep Talk (31-45)
+            { id: 31, part: 4, text: "Menurutmu aku orang seperti apa?" },
+            { id: 32, part: 4, text: "Apa karakterku yang paling menonjol?" },
+            { id: 33, part: 4, text: "Aku lebih mengandalkan logika atau perasaan?" },
+            { id: 34, part: 4, text: "Kalau aku memendam masalah biasanya bagaimana?" },
+            { id: 35, part: 4, text: "Kapan menurutmu aku benar-benar merasa hancur?" },
+            { id: 36, part: 4, text: "Apa yang membuatku kehilangan semangat?" },
+            { id: 37, part: 4, text: "Kalau aku mulai menjauh menurutmu kenapa?" },
+            { id: 38, part: 4, text: "Apa tanda kalau aku sudah lelah?" },
+            { id: 39, part: 4, text: "Apa tanda kalau aku sudah benar-benar muak?" },
+            { id: 40, part: 4, text: "Kalau aku menyerah biasanya bagaimana sikapku?" },
+            { id: 41, part: 4, text: "Aku mudah memaafkan atau sulit melupakan?" },
+            { id: 42, part: 4, text: "Apa yang paling ingin aku dengar saat rapuh?" },
+            { id: 43, part: 4, text: "Apa ketakutan terbesarku dalam hubungan?" },
+            { id: 44, part: 4, text: "Menurutmu love language-ku apa?" },
+            { id: 45, part: 4, text: "Apa yang paling aku butuhkan dari pasangan?" },
+            // Bagian 5 — Tentang Kita (46-55)
+            { id: 46, part: 5, text: "Menurutmu kenapa aku memilih kamu?" },
+            { id: 47, part: 5, text: "Apa yang paling aku sukai dari kamu?" },
+            { id: 48, part: 5, text: "Apa harapanku dalam hubungan ini?" },
+            { id: 49, part: 5, text: "Kalau kita bertengkar aku ingin diperlakukan seperti apa?" },
+            { id: 50, part: 5, text: "Menurutmu apakah kamu benar-benar mengenalku? Jelaskan." },
+            { id: 51, part: 5, text: "Jelaskan aku dalam tiga kata." },
+            { id: 52, part: 5, text: "Apa yang bisa kamu lakukan agar aku merasa lebih dicintai?" },
+            { id: 53, part: 5, text: "Apa yang paling aku takutkan dalam hubungan ini?" },
+            { id: 54, part: 5, text: "Apa janjimu setelah mengerjakan website ini?" },
+            { id: 55, part: 5, text: "Menurutmu aku sayang kamu nggak? Kenapa?" }
+        ];
+
+        const totalQuestions = questions.length;
+
+        // Bagian labels
+        const partLabels = {
+            1: "Bagian 1 — Tentang Aku",
+            2: "Bagian 2 — Kebiasaan",
+            3: "Bagian 3 — Mengenal Perasaanku",
+            4: "Bagian 4 — Deep Talk",
+            5: "Bagian 5 — Tentang Kita"
+        };
+
+        // ============================================================
+        //  STATE
+        // ============================================================
+        let currentIndex = 0;
+        const answers = new Array(totalQuestions).fill('');
+
+        // ============================================================
+        //  DOM REFS
+        // ============================================================
+        const homePage = document.getElementById('homePage');
+        const quizPage = document.getElementById('quizPage');
+        const endPage = document.getElementById('endPage');
+
+        const startBtn = document.getElementById('startBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalStartBtn = document.getElementById('modalStartBtn');
+
+        const partLabel = document.getElementById('partLabel');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const answerInput = document.getElementById('answerInput');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const sendWaBtn = document.getElementById('sendWaBtn');
+
+        const confettiContainer = document.getElementById('confettiContainer');
+        const endHearts = document.getElementById('endHearts');
+        const heartsBg = document.getElementById('heartsBg');
+
+        // ============================================================
+        //  KATA TERLARANG (validasi)
+        // ============================================================
+        const forbiddenWords = [
+            'gatau', 'ga tau', 'gak tau', 'gk tau', 'nggak tau', 'tidak tahu',
+            'entah', 'mboh', 'mungkin', 'lupa', 'bingung', 'terserah', 'bebas',
+            'skip', '...', '-', '?', '🤷', '🤷‍♂️', '🤷‍♀️', '😅', '😐', '🤔'
+        ];
+
+        function cleanText(text) {
+            return text.toLowerCase()
+                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function isForbidden(input) {
+            const cleaned = cleanText(input);
+            if (cleaned === '') return true;
+            return forbiddenWords.some(word => {
+                const cw = cleanText(word);
+                return cleaned === cw;
+            });
+        }
+
+        // ============================================================
+        //  RENDER FUNCTIONS
+        // ============================================================
+        function renderQuestion(index) {
+            const q = questions[index];
+            const partNum = q.part;
+            partLabel.textContent = partLabels[partNum] || `Bagian ${partNum}`;
+            questionNumber.textContent = `Pertanyaan ${index + 1} / ${totalQuestions}`;
+            questionText.textContent = q.text;
+
+            // Isi input dengan jawaban tersimpan
+            answerInput.value = answers[index] || '';
+            answerInput.classList.remove('error');
+            // Auto-resize textarea
+            autoResize(answerInput);
+
+            // Update progress
+            const progress = ((index + 1) / totalQuestions) * 100;
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `${Math.round(progress)}%`;
+
+            // Navigasi
+            prevBtn.disabled = index === 0;
+            if (index === totalQuestions - 1) {
+                nextBtn.textContent = '💕 Kirim';
+                nextBtn.disabled = false;
+            } else {
+                nextBtn.textContent = 'Selanjutnya →';
+                nextBtn.disabled = false;
+            }
+
+            // Fokus ke input
+            setTimeout(() => answerInput.focus(), 100);
+        }
+
+        function autoResize(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 180) + 'px';
+        }
+
+        // ============================================================
+        //  NAVIGATION
+        // ============================================================
+        function goTo(index) {
+            // Simpan jawaban saat ini
+            answers[currentIndex] = answerInput.value.trim();
+
+            // Validasi jika pindah ke pertanyaan berikutnya atau kirim
+            const isForward = index > currentIndex;
+            if (isForward || index === totalQuestions - 1) {
+                const currentAnswer = answerInput.value.trim();
+                if (isForbidden(currentAnswer)) {
+                    showForbiddenPopup();
+                    return;
+                }
+                answers[currentIndex] = currentAnswer;
+            }
+
+            currentIndex = index;
+            renderQuestion(currentIndex);
+            // animasi halus
+            quizPage.style.animation = 'none';
+            requestAnimationFrame(() => {
+                quizPage.style.animation = 'fadeSlide 0.4s ease forwards';
+            });
+        }
+
+        function nextQuestion() {
+            const currentAnswer = answerInput.value.trim();
+            if (isForbidden(currentAnswer)) {
+                showForbiddenPopup();
+                return;
+            }
+            answers[currentIndex] = currentAnswer;
+
+            if (currentIndex === totalQuestions - 1) {
+                // Kirim: pindah ke halaman akhir
+                finishQuiz();
+                return;
+            }
+            goTo(currentIndex + 1);
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                answers[currentIndex] = answerInput.value.trim();
+                goTo(currentIndex - 1);
+            }
+        }
+
+        // ============================================================
+        //  FORBIDDEN POPUP
+        // ============================================================
+        function showForbiddenPopup() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.style.position = 'fixed';
+            overlay.style.inset = '0';
+            overlay.style.zIndex = '9999';
+            overlay.style.background = 'rgba(45,27,38,0.55)';
+            overlay.style.backdropFilter = 'blur(6px)';
+            overlay.style.display = 'flex';
+            overlay.style.alignItems = 'center';
+            overlay.style.justifyContent = 'center';
+            overlay.style.padding = '20px';
+
+            const box = document.createElement('div');
+            box.className = 'modal-box';
+            box.style.maxWidth = '480px';
+            box.style.padding = '34px 28px 30px';
+            box.style.textAlign = 'center';
+            box.innerHTML = `
+                <div style="font-size:2.8rem; margin-bottom:4px;">❤️</div>
+                <h3 style="font-size:1.2rem; font-weight:600; color:#2d1b26; margin-bottom:10px;">Jangan menyerah ya.</h3>
+                <p style="font-size:0.95rem; color:#4d3542; line-height:1.7; margin-bottom:18px;">
+                    Aku membuat website ini bukan supaya kamu menjawab "gak tahu", tapi supaya kamu mencoba mengingat siapa aku.<br><br>
+                    Tidak apa-apa salah.<br>
+                    Yang penting kamu berusaha.
+                </p>
+                <button class="btn-primary" style="width:100%;" id="forbiddenOkBtn">💕 Baik, aku coba lagi</button>
+            `;
+
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+
+            const okBtn = box.querySelector('#forbiddenOkBtn');
+            okBtn.addEventListener('click', () => {
+                overlay.remove();
+                answerInput.focus();
+                answerInput.classList.add('error');
+                setTimeout(() => answerInput.classList.remove('error'), 600);
+            });
+
+            // Tutup dengan klik di luar
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.remove();
+                    answerInput.focus();
+                }
+            });
+
+            // Enter pada tombol
+            okBtn.focus();
+        }
+
+        // ============================================================
+        //  FINISH QUIZ
+        // ============================================================
+        function finishQuiz() {
+            // Simpan jawaban terakhir
+            answers[currentIndex] = answerInput.value.trim();
+
+            // Tampilkan halaman akhir
+            quizPage.classList.remove('active');
+            quizPage.style.display = 'none';
+            endPage.classList.add('active');
+            endPage.style.display = 'block';
+            endPage.style.animation = 'fadeSlide 0.6s ease forwards';
+
+            // Trigger confetti & hearts
+            launchConfetti();
+            launchEndHearts();
+        }
+
+        // ============================================================
+        //  CONFETTI
+        // ============================================================
+        function launchConfetti() {
+            const container = confettiContainer;
+            container.innerHTML = '';
+            const colors = ['#e06a8a', '#f5b7d0', '#ff6b8a', '#ffb3c6', '#ff8fa3', '#f8d7e8', '#ffdce8', '#ff4d6d', '#c9184a',
+                '#ff758f'
+            ];
+            const pieces = 120;
+
+            for (let i = 0; i < pieces; i++) {
+                const el = document.createElement('div');
+                el.className = 'confetti-piece';
+                const size = 6 + Math.random() * 10;
+                const isCircle = Math.random() > 0.5;
+                el.style.width = isCircle ? size + 'px' : size * 0.5 + 'px';
+                el.style.height = isCircle ? size + 'px' : size * 1.6 + 'px';
+                el.style.borderRadius = isCircle ? '50%' : '2px';
+                el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                el.style.left = Math.random() * 100 + '%';
+                el.style.animationDuration = (2.5 + Math.random() * 3) + 's';
+                el.style.animationDelay = (Math.random() * 2.5) + 's';
+                el.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(el);
+            }
+
+            // Hapus setelah animasi selesai
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 6000);
+        }
+
+        // ============================================================
+        //  END HEARTS
+        // ============================================================
+        function launchEndHearts() {
+            const container = endHearts;
+            container.innerHTML = '';
+            const total = 35;
+            for (let i = 0; i < total; i++) {
+                const el = document.createElement('div');
+                el.className = 'float-heart';
+                el.textContent = ['❤️', '💕', '🌸', '💗', '✨'][Math.floor(Math.random() * 5)];
+                el.style.left = Math.random() * 100 + '%';
+                el.style.fontSize = (18 + Math.random() * 26) + 'px';
+                el.style.animationDuration = (6 + Math.random() * 10) + 's';
+                el.style.animationDelay = (Math.random() * 8) + 's';
+                el.style.opacity = 0.2 + Math.random() * 0.4;
+                container.appendChild(el);
+            }
+
+            // Bersihkan setelah beberapa saat
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 18000);
+        }
+
+        // ============================================================
+        //  KIRIM JAWABAN KE WHATSAPP
+        // ============================================================
+        const WA_NUMBER = '6285900017703'; // format internasional tanpa + atau 0 di depan
+
+        function buildWaMessage() {
+            let msg = 'Halo! Ini jawabanku untuk kuis "Seberapa Kenal Kamu Sama Aku?" 💕\n\n';
+            questions.forEach((q, i) => {
+                const jawaban = (answers[i] && answers[i].trim()) ? answers[i].trim() : '(tidak dijawab)';
+                msg += `${q.id}. ${q.text}\n➤ ${jawaban}\n\n`;
+            });
+            return msg;
+        }
+
+        function sendAnswersToWhatsApp() {
+            // Pastikan jawaban terakhir yang sedang diketik ikut tersimpan
+            if (typeof answerInput !== 'undefined' && quizPage.classList.contains('active')) {
+                answers[currentIndex] = answerInput.value.trim();
+            }
+            const text = encodeURIComponent(buildWaMessage());
+            const url = `https://wa.me/${WA_NUMBER}?text=${text}`;
+            window.open(url, '_blank');
+        }
+
+        // ============================================================
+        //  BACKGROUND HEARTS (home & quiz)
+        // ============================================================
+        function initBackgroundHearts() {
+            const bg = heartsBg;
+            bg.innerHTML = '';
+            const count = 14;
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'heart';
+                el.textContent = '❤️';
+                el.style.left = Math.random() * 100 + '%';
+                el.style.fontSize = (14 + Math.random() * 20) + 'px';
+                el.style.animationDuration = (12 + Math.random() * 18) + 's';
+                el.style.animationDelay = (Math.random() * 16) + 's';
+                el.style.opacity = 0.08 + Math.random() * 0.12;
+                bg.appendChild(el);
+            }
+        }
+        initBackgroundHearts();
+
+        // ============================================================
+        //  EVENT LISTENERS
+        // ============================================================
+
+        // Tombol Mulai di Home
+        startBtn.addEventListener('click', () => {
+            modalOverlay.classList.add('active');
+        });
+
+        // Tombol Mulai di Modal
+        modalStartBtn.addEventListener('click', () => {
+            modalOverlay.classList.remove('active');
+            // Pindah ke quiz
+            homePage.classList.remove('active');
+            homePage.style.display = 'none';
+            quizPage.classList.add('active');
+            quizPage.style.display = 'block';
+            renderQuestion(0);
+        });
+
+        // Tutup modal dengan klik di luar
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+
+        // Navigasi
+        prevBtn.addEventListener('click', prevQuestion);
+        nextBtn.addEventListener('click', nextQuestion);
+
+ // Submit (halaman akhir)
+        submitBtn.addEventListener('click', () => {
+            // Efek klik
+            submitBtn.style.transform = 'scale(0.94)';
+            setTimeout(() => submitBtn.style.transform = '', 200);
+
+            // Tampilkan ucapan terima kasih + confetti lagi
+            launchConfetti();
+            launchEndHearts();
+            // Ubah teks tombol sementara
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '💕 Terima kasih!';
+            submitBtn.disabled = true;
+            setTimeout(() => {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }, 3000);
+        });
+
+        // Kirim jawaban ke WhatsApp
+        sendWaBtn.addEventListener('click', () => {
+            sendWaBtn.style.transform = 'scale(0.94)';
+            setTimeout(() => sendWaBtn.style.transform = '', 200);
+            sendAnswersToWhatsApp();
+        });
+
+        // Enter pada input -> next (kecuali jika shift+enter untuk newline)
+        answerInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                nextBtn.click();
+            }
+        });
+
+        // Auto-resize textarea
+        answerInput.addEventListener('input', () => {
+            autoResize(answerInput);
+        });
+
+        // ============================================================
+        //  KEYBOARD SHORTCUTS (panah kiri/kanan)
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if (quizPage.classList.contains('active')) {
+                if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+                    e.preventDefault();
+                    prevBtn.click();
+                } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
+                    e.preventDefault();
+                    nextBtn.click();
+                }
+            }
+        });
+
+        // ============================================================
+        //  INIT: pastikan home tampil
+        // ============================================================
+        homePage.style.display = 'block';
+        homePage.classList.add('active');
+        quizPage.style.display = 'none';
+        endPage.style.display = 'none';
+
+        console.log('💕 Website siap! Seberapa kenal kamu sama aku?');
+    </script>
+
+</body>
+</html>
