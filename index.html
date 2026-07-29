@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Seberapa Kenal Kamu Sama Aku? ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
-        /* ----- RESET & GLOBAL ----- */
+        /* ============================================================
+           DESIGN TOKENS
+           Palette: soft white paper + soft pink, warm plum ink, a
+           whisper of muted gold for the seal/accents only.
+           Type: Fraunces (display serif, warm/romantic) + Poppins (body)
+        ============================================================ */
         *,
         *::before,
         *::after {
@@ -17,15 +22,24 @@
 
         :root {
             --white: #FFFFFF;
+            --cream: #FFFDFB;
+            --pink-50: #FDF3F7;
+            --pink-100: #FBE6EF;
             --pink-soft: #F8D7E8;
             --pink-light: #FFDCE8;
-            --pink-mid: #F5B7D0;
-            --pink-dark: #E895B8;
-            --shadow: 0 12px 40px rgba(232, 149, 184, 0.18);
-            --shadow-hover: 0 18px 50px rgba(232, 149, 184, 0.26);
-            --radius: 28px;
+            --pink-mid: #F0AFC9;
+            --pink-dark: #D8799F;
+            --pink-deep: #C05C87;
+            --gold: #D8BA84;
+            --ink: #3B2430;
+            --ink-soft: #7C5A68;
+            --ink-faint: #A98A97;
+            --shadow: 0 12px 40px rgba(200, 120, 160, 0.16);
+            --shadow-hover: 0 18px 55px rgba(200, 120, 160, 0.24);
+            --radius: 30px;
             --radius-sm: 16px;
             --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            --font-display: 'Fraunces', 'Poppins', serif;
             --font: 'Poppins', 'Inter', sans-serif;
         }
 
@@ -33,19 +47,31 @@
         body {
             height: 100%;
             font-family: var(--font);
-            background: var(--white);
-            color: #2d1b26;
+            background: var(--cream);
+            color: var(--ink);
             scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
         body {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: safe center;
+            justify-content: safe center;
             min-height: 100vh;
             padding: 20px;
-            background: linear-gradient(145deg, #fff9fb 0%, #fceef4 100%);
+            background:
+                radial-gradient(ellipse 900px 500px at 12% -10%, rgba(248, 215, 232, 0.55), transparent 60%),
+                radial-gradient(ellipse 900px 600px at 100% 110%, rgba(240, 175, 201, 0.35), transparent 55%),
+                linear-gradient(160deg, #fffdfc 0%, #fdf3f7 100%);
+        }
+
+        /* ----- FOCUS STATE (ganti ring bawaan browser jadi pink) ----- */
+        button:focus-visible {
+            outline: 2px solid var(--pink-mid);
+            outline-offset: 3px;
+        }
+        button:focus:not(:focus-visible) {
+            outline: none;
         }
 
         /* ----- SCROLLBAR ----- */
@@ -68,17 +94,84 @@
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            padding: 36px 32px 40px;
+            padding: 44px 38px 40px;
             position: relative;
             overflow: hidden;
             transition: box-shadow var(--transition);
             min-height: 500px;
-            backdrop-filter: blur(2px);
-            border: 1px solid rgba(255, 220, 232, 0.30);
+            border: 1px solid rgba(216, 121, 159, 0.10);
+        }
+
+        .app-wrapper::before {
+            /* top edge hairline accent, like a letter's fold */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--pink-100), var(--pink-mid) 50%, var(--pink-100));
         }
 
         .app-wrapper:hover {
             box-shadow: var(--shadow-hover);
+        }
+
+        /* ----- SEAL (signature element) -----
+           A small embossed wax-seal medallion that anchors every
+           page — home, quiz, and the closing page. */
+        .seal {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at 32% 28%, #f6c9dd 0%, var(--pink-mid) 46%, var(--pink-deep) 100%);
+            box-shadow:
+                0 6px 16px rgba(192, 92, 135, 0.35),
+                inset 0 2px 3px rgba(255, 255, 255, 0.55),
+                inset 0 -3px 6px rgba(120, 40, 75, 0.30);
+        }
+        .seal::after {
+            content: '❤';
+            font-size: 1.3rem;
+            color: #fff6f9;
+            text-shadow: 0 1px 1px rgba(120, 40, 75, 0.4);
+        }
+        .seal--sm {
+            width: 38px;
+            height: 38px;
+            margin-bottom: 16px;
+        }
+        .seal--sm::after {
+            font-size: 0.95rem;
+        }
+
+        /* ----- DIVIDER (botanical line, used under headings) ----- */
+        .divider {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 16px 0 6px;
+            color: var(--pink-dark);
+            opacity: 0.7;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            height: 1px;
+            width: 46px;
+            background: linear-gradient(90deg, transparent, var(--pink-mid), transparent);
+        }
+        .divider svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
         }
 
         /* ----- FLOATING HEARTS BACKGROUND ----- */
@@ -91,7 +184,7 @@
         }
         .hearts-bg .heart {
             position: absolute;
-            color: rgba(245, 183, 208, 0.15);
+            color: rgba(216, 121, 159, 0.14);
             font-size: 22px;
             user-select: none;
             animation: floatHeart linear infinite;
@@ -121,15 +214,18 @@
 
         /* ----- TYPOGRAPHY ----- */
         .title {
+            font-family: var(--font-display);
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 600;
+            font-style: italic;
             text-align: center;
-            color: #2d1b26;
-            line-height: 1.2;
-            letter-spacing: -0.5px;
+            color: var(--ink);
+            line-height: 1.25;
+            letter-spacing: -0.2px;
         }
         .title .heart-icon {
-            color: #e06a8a;
+            color: var(--pink-deep);
+            font-style: normal;
             display: inline-block;
             animation: pulseHeart 1.8s ease-in-out infinite;
         }
@@ -144,101 +240,126 @@
         }
 
         .subtitle {
-            font-size: 1rem;
+            font-size: 0.98rem;
             font-weight: 400;
-            color: #5a3f4b;
+            color: var(--ink-soft);
             text-align: center;
-            max-width: 520px;
+            max-width: 500px;
             margin: 14px auto 0;
-            line-height: 1.7;
-            opacity: 0.85;
+            line-height: 1.75;
         }
 
         .part-label {
-            font-size: 0.75rem;
+            font-family: var(--font);
+            font-size: 0.72rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--pink-dark);
-            background: var(--pink-soft);
+            letter-spacing: 1.6px;
+            color: var(--pink-deep);
+            background: var(--pink-50);
+            border: 1px solid var(--pink-100);
             display: inline-block;
-            padding: 4px 16px;
+            padding: 5px 16px;
             border-radius: 40px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
 
         .question-number {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
-            color: #7a5a68;
-            margin-bottom: 6px;
+            color: var(--ink-faint);
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
         }
 
         .question-text {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1f141a;
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 500;
+            font-style: italic;
+            color: var(--ink);
             line-height: 1.5;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             min-height: 3.2rem;
+            position: relative;
+            padding-left: 4px;
         }
 
         /* ----- INPUT ----- */
         .answer-input {
             width: 100%;
-            padding: 14px 18px;
+            padding: 15px 18px;
             font-size: 1rem;
             font-family: var(--font);
-            border: 2px solid var(--pink-soft);
+            border: 2px solid var(--pink-100);
             border-radius: var(--radius-sm);
-            background: #fefafc;
-            transition: border var(--transition), box-shadow var(--transition);
+            background: var(--pink-50);
+            transition: border var(--transition), box-shadow var(--transition), background var(--transition);
             resize: vertical;
             min-height: 60px;
             max-height: 180px;
-            color: #1f141a;
-            line-height: 1.5;
+            color: var(--ink);
+            line-height: 1.55;
         }
         .answer-input:focus {
             outline: none;
             border-color: var(--pink-mid);
-            box-shadow: 0 0 0 5px rgba(245, 183, 208, 0.20);
+            background: var(--white);
+            box-shadow: 0 0 0 5px rgba(240, 175, 201, 0.25);
         }
         .answer-input::placeholder {
-            color: #b89ba8;
+            color: var(--ink-faint);
             font-weight: 300;
             font-size: 0.92rem;
         }
         .answer-input.error {
-            border-color: #e06a8a;
-            box-shadow: 0 0 0 5px rgba(224, 106, 138, 0.15);
+            border-color: var(--pink-deep);
+            box-shadow: 0 0 0 5px rgba(192, 92, 135, 0.15);
         }
 
         /* ----- PROGRESS BAR ----- */
         .progress-wrap {
-            margin: 22px 0 20px;
+            margin: 24px 0 20px;
             position: relative;
         }
         .progress-bar {
             width: 100%;
-            height: 6px;
-            background: #f0dce6;
+            height: 7px;
+            background: var(--pink-100);
             border-radius: 20px;
-            overflow: hidden;
+            overflow: visible;
             position: relative;
         }
         .progress-fill {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--pink-light), var(--pink-mid), var(--pink-dark));
+            background: linear-gradient(90deg, var(--pink-light), var(--pink-mid), var(--pink-deep));
             border-radius: 20px;
             transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            position: relative;
+        }
+        .progress-fill::after {
+            content: '❤';
+            position: absolute;
+            right: -7px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: var(--pink-deep);
+            background: var(--white);
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(192, 92, 135, 0.35);
         }
         .progress-text {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 500;
-            color: #7a5a68;
-            margin-top: 8px;
+            color: var(--ink-faint);
+            margin-top: 10px;
             text-align: right;
             letter-spacing: 0.3px;
         }
@@ -248,16 +369,16 @@
             display: flex;
             justify-content: space-between;
             gap: 12px;
-            margin-top: 24px;
+            margin-top: 26px;
         }
         .nav-buttons button {
             flex: 1;
-            padding: 14px 10px;
+            padding: 15px 10px;
             font-size: 0.95rem;
             font-weight: 600;
             font-family: var(--font);
             border: none;
-            border-radius: var(--radius-sm);
+            border-radius: 100px;
             cursor: pointer;
             transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
             display: flex;
@@ -270,11 +391,12 @@
         }
 
         .btn-prev {
-            background: #f5eaef;
-            color: #5a3f4b;
+            background: var(--pink-50);
+            color: var(--ink-soft);
+            border: 1px solid var(--pink-100) !important;
         }
         .btn-prev:hover:not(:disabled) {
-            background: #ecdaE4;
+            background: var(--pink-100);
         }
         .btn-prev:disabled {
             opacity: 0.35;
@@ -283,11 +405,11 @@
 
         .btn-next {
             background: linear-gradient(135deg, var(--pink-light), var(--pink-mid));
-            color: #2d1b26;
-            box-shadow: 0 4px 14px rgba(245, 183, 208, 0.30);
+            color: var(--ink);
+            box-shadow: 0 4px 14px rgba(240, 175, 201, 0.40);
         }
         .btn-next:hover:not(:disabled) {
-            box-shadow: 0 6px 22px rgba(245, 183, 208, 0.45);
+            box-shadow: 0 6px 22px rgba(240, 175, 201, 0.55);
             transform: translateY(-2px);
         }
         .btn-next:disabled {
@@ -299,16 +421,16 @@
 
         .btn-primary {
             background: linear-gradient(135deg, var(--pink-light), var(--pink-mid));
-            color: #2d1b26;
-            padding: 16px 36px;
-            font-size: 1.1rem;
+            color: var(--ink);
+            padding: 16px 38px;
+            font-size: 1.05rem;
             font-weight: 600;
             font-family: var(--font);
             border: none;
-            border-radius: var(--radius-sm);
+            border-radius: 100px;
             cursor: pointer;
             transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-            box-shadow: 0 6px 24px rgba(245, 183, 208, 0.30);
+            box-shadow: 0 6px 24px rgba(240, 175, 201, 0.40);
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -316,26 +438,146 @@
         }
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 34px rgba(245, 183, 208, 0.45);
+            box-shadow: 0 10px 34px rgba(240, 175, 201, 0.55);
         }
         .btn-primary:active {
             transform: scale(0.96);
         }
 
+        /* ----- BTN-START (tombol "Mulai" di home page) ----- */
+        .btn-start {
+            position: relative;
+            padding: 10px 34px 10px 10px;
+            background: linear-gradient(155deg, #FBC6DD 0%, var(--pink-mid) 55%, var(--pink-dark) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            box-shadow:
+                0 10px 26px rgba(216, 121, 159, 0.38),
+                inset 0 1px 1px rgba(255, 255, 255, 0.6);
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .btn-start::before {
+            /* glossy sheen across the top half */
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.08) 42%, rgba(255, 255, 255, 0) 60%);
+            pointer-events: none;
+        }
+        .btn-start-icon {
+            position: relative;
+            z-index: 1;
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-size: 1.15rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-start-label {
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+            color: var(--ink);
+        }
+        .btn-start:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 16px 36px rgba(216, 121, 159, 0.48),
+                inset 0 1px 1px rgba(255, 255, 255, 0.65);
+        }
+        .btn-start:active {
+            transform: scale(0.97);
+        }
+        .btn-secondary.btn-start-outline {
+            position: relative;
+            padding: 10px 30px 10px 10px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1.5px solid var(--pink-100) !important;
+            box-shadow: 0 8px 22px rgba(216, 121, 159, 0.18);
+            backdrop-filter: blur(6px);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                        background 0.35s ease;
+        }
+        .btn-secondary.btn-start-outline:hover {
+            background: var(--pink-50);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 14px 30px rgba(216, 121, 159, 0.26);
+        }
+        .btn-secondary.btn-start-outline:active {
+            transform: scale(0.97);
+        }
+        .btn-start-icon--outline {
+            border: 1.5px solid var(--pink-mid);
+            background: var(--white);
+            color: var(--pink-deep);
+        }
+        .btn-start-label--soft {
+            color: var(--ink-soft);
+            font-weight: 600;
+        }
+
+        /* ----- CREDIT LINE (copyright kecil di home page) ----- */
+        .credit-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 30px;
+            padding-top: 16px;
+            border-top: 1px solid var(--pink-100);
+        }
+        .credit-label {
+            font-family: var(--font);
+            font-size: 10.5px;
+            font-weight: 500;
+            font-style: italic;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: #1a1a1a;
+        }
+        .credit-name {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-weight: 600;
+            font-size: 13.5px;
+            color: var(--pink-deep);
+            letter-spacing: 0.01em;
+        }
+        .credit-arrow {
+            font-size: 12px;
+            color: var(--pink-mid);
+            transform: translateY(-0.5px);
+        }
+        .credit-sep {
+            font-size: 9px;
+            color: var(--gold);
+            margin: 0 2px;
+        }
+
         .btn-secondary {
-            background: #f5eaef;
-            color: #5a3f4b;
+            background: var(--pink-50);
+            color: var(--ink-soft);
             padding: 14px 28px;
             font-size: 1rem;
             font-weight: 500;
             font-family: var(--font);
-            border: none;
-            border-radius: var(--radius-sm);
+            border: 1px solid var(--pink-100);
+            border-radius: 100px;
             cursor: pointer;
             transition: background var(--transition), transform var(--transition);
         }
         .btn-secondary:hover {
-            background: #ecdaE4;
+            background: var(--pink-100);
         }
         .btn-secondary:active {
             transform: scale(0.96);
@@ -345,7 +587,7 @@
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(45, 27, 38, 0.50);
+            background: rgba(59, 36, 48, 0.45);
             backdrop-filter: blur(8px);
             display: flex;
             align-items: center;
@@ -366,12 +608,13 @@
             border-radius: var(--radius);
             max-width: 520px;
             width: 100%;
-            padding: 40px 34px 34px;
-            box-shadow: 0 30px 70px rgba(45, 27, 38, 0.20);
+            padding: 38px 34px 34px;
+            box-shadow: 0 30px 70px rgba(59, 36, 48, 0.22);
             transform: scale(0.92) translateY(20px);
             transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
             opacity: 0;
             text-align: center;
+            border-top: 4px solid var(--pink-mid);
         }
         .modal-overlay.active .modal-box {
             transform: scale(1) translateY(0);
@@ -379,20 +622,120 @@
         }
 
         .modal-box .modal-icon {
-            font-size: 2.6rem;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
+        }
+
+        /* ----- HEART-DUO (ilustrasi double heart 3D untuk modal) ----- */
+        .heart-duo {
+            position: relative;
+            width: 100%;
+            height: 108px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .heart-duo-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 168px;
+            height: 100px;
+            border: 1px solid rgba(216, 121, 159, 0.22);
+            border-radius: 50%;
+            transform: translate(-50%, -52%) rotate(-8deg);
+            z-index: 0;
+        }
+        .heart-back,
+        .heart-front {
+            position: absolute;
+        }
+        .heart-back {
+            width: 62px;
+            height: auto;
+            left: 50%;
+            top: 6px;
+            transform: translateX(-62%);
+            z-index: 1;
+            filter: drop-shadow(0 8px 14px rgba(216, 121, 159, 0.45));
+        }
+        .heart-front {
+            width: 40px;
+            height: auto;
+            left: 50%;
+            top: 42px;
+            transform: translateX(28%);
+            z-index: 2;
+            filter: drop-shadow(0 6px 10px rgba(216, 121, 159, 0.40));
+        }
+        .sparkle {
+            position: absolute;
+            color: var(--pink-dark);
+            z-index: 3;
+            animation: sparkleTwinkle 2.6s ease-in-out infinite;
+        }
+        .sparkle-1 {
+            top: 4px;
+            left: 32%;
+            font-size: 0.9rem;
+            animation-delay: 0s;
+        }
+        .sparkle-2 {
+            top: 14px;
+            right: 20%;
+            font-size: 0.65rem;
+            color: var(--gold);
+            animation-delay: 0.9s;
+        }
+        .sparkle-3 {
+            bottom: 8px;
+            left: 22%;
+            font-size: 0.6rem;
+            animation-delay: 1.7s;
+        }
+        .dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--pink-mid);
+            z-index: 3;
+            animation: sparkleTwinkle 3s ease-in-out infinite;
+        }
+        .dot-1 {
+            top: 30px;
+            left: 20%;
+            animation-delay: 0.4s;
+        }
+        .dot-2 {
+            bottom: 14px;
+            right: 24%;
+            width: 3px;
+            height: 3px;
+            animation-delay: 1.3s;
+        }
+        @keyframes sparkleTwinkle {
+            0%, 100% {
+                opacity: 0.25;
+                transform: scale(0.7);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.15);
+            }
         }
         .modal-box h3 {
-            font-size: 1.3rem;
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.35rem;
             font-weight: 600;
-            color: #2d1b26;
+            color: var(--ink);
             margin-bottom: 12px;
         }
         .modal-box p {
-            font-size: 0.98rem;
-            color: #4d3542;
-            line-height: 1.7;
-            margin-bottom: 20px;
+            font-size: 0.96rem;
+            color: var(--ink-soft);
+            line-height: 1.75;
+            margin-bottom: 22px;
         }
         .modal-box .btn-primary {
             width: 100%;
@@ -421,13 +764,13 @@
         /* ----- HOME PAGE ----- */
         .home-page .title-wrap {
             text-align: center;
-            padding: 20px 0 8px;
+            padding: 4px 0 8px;
         }
         .home-page .title {
-            font-size: 2.2rem;
+            font-size: 2.15rem;
         }
         .home-page .subtitle {
-            font-size: 1.05rem;
+            font-size: 1.02rem;
             margin: 18px auto 32px;
         }
         .home-page .btn-primary {
@@ -437,30 +780,134 @@
         }
 
         /* ----- END PAGE ----- */
+        .heart-cluster {
+            position: relative;
+            width: 100%;
+            height: 138px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 6px;
+        }
+        .heart-cluster .heart-back--lg {
+            position: absolute;
+            width: 72px;
+            height: auto;
+            left: 50%;
+            top: 14px;
+            transform: translateX(-66%);
+            z-index: 1;
+            filter: drop-shadow(0 10px 16px rgba(216, 121, 159, 0.42));
+        }
+        .heart-cluster .heart-front--lg {
+            position: absolute;
+            width: 46px;
+            height: auto;
+            left: 50%;
+            top: 54px;
+            transform: translateX(30%);
+            z-index: 2;
+            filter: drop-shadow(0 8px 12px rgba(216, 121, 159, 0.38));
+        }
+        .mini-heart {
+            position: absolute;
+            z-index: 1;
+            filter: drop-shadow(0 3px 6px rgba(216, 121, 159, 0.30));
+        }
+        .mini-heart-1 {
+            top: 12px;
+            left: 16%;
+            font-size: 1.4rem;
+            color: #F3B8D0;
+            transform: rotate(-10deg);
+        }
+        .mini-heart-2 {
+            top: 2px;
+            left: 33%;
+            font-size: 1rem;
+            color: #F6C9DD;
+            transform: rotate(4deg);
+        }
+        .mini-heart-3 {
+            top: 26px;
+            right: 12%;
+            font-size: 1.55rem;
+            color: #EFA9C6;
+            transform: rotate(8deg);
+        }
+        .sparkle-gold {
+            position: absolute;
+            color: var(--gold);
+            z-index: 3;
+            animation: sparkleTwinkle 2.8s ease-in-out infinite;
+        }
+        .sparkle-gold-1 {
+            top: 8px;
+            right: 24%;
+            font-size: 1.1rem;
+            animation-delay: 0.2s;
+        }
+        .sparkle-gold-2 {
+            bottom: 18px;
+            left: 20%;
+            font-size: 0.7rem;
+            animation-delay: 1.2s;
+        }
+        .sparkle-gold-3 {
+            top: 44px;
+            right: 6%;
+            font-size: 0.6rem;
+            animation-delay: 2s;
+        }
+        .glow-dot {
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        .glow-dot-1 {
+            width: 60px;
+            height: 60px;
+            left: 22%;
+            top: 20px;
+            background: radial-gradient(circle, rgba(245, 183, 208, 0.35), transparent 70%);
+        }
+        .glow-dot-2 {
+            width: 70px;
+            height: 70px;
+            right: 18%;
+            top: 30px;
+            background: radial-gradient(circle, rgba(216, 121, 159, 0.28), transparent 70%);
+        }
         .end-page .end-icon {
-            font-size: 3.4rem;
+            font-size: 2.2rem;
             text-align: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         .end-page .end-title {
-            font-size: 1.7rem;
-            font-weight: 700;
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 1.75rem;
+            font-weight: 600;
             text-align: center;
-            color: #2d1b26;
-            margin-bottom: 12px;
+            color: var(--ink);
+            margin-bottom: 14px;
         }
         .end-page .end-message {
             font-size: 1rem;
-            color: #4d3542;
-            line-height: 1.8;
+            color: var(--ink-soft);
+            line-height: 1.85;
             text-align: center;
             max-width: 500px;
-            margin: 0 auto 28px;
+            margin: 0 auto 32px;
         }
-        .end-page .btn-primary {
+        .end-page .btn-primary,
+        .end-page .btn-secondary {
             margin: 0 auto;
             display: flex;
-            width: fit-content;
+            width: 100%;
+        }
+        .end-page .btn-secondary {
+            margin-top: 14px;
         }
 
         /* ----- CONFETTI CONTAINER ----- */
@@ -501,7 +948,7 @@
         .end-hearts .float-heart {
             position: absolute;
             font-size: 24px;
-            color: rgba(224, 106, 138, 0.35);
+            color: rgba(192, 92, 135, 0.35);
             animation: floatUp linear forwards;
             user-select: none;
         }
@@ -525,9 +972,13 @@
         /* ----- RESPONSIVE ----- */
         @media (max-width: 600px) {
             .app-wrapper {
-                padding: 24px 18px 30px;
+                padding: 30px 20px 30px;
                 border-radius: 24px;
                 min-height: 420px;
+            }
+            .seal {
+                width: 46px;
+                height: 46px;
             }
             .title {
                 font-size: 1.5rem;
@@ -536,7 +987,7 @@
                 font-size: 1.6rem;
             }
             .question-text {
-                font-size: 1.05rem;
+                font-size: 1.1rem;
                 min-height: 2.8rem;
             }
             .answer-input {
@@ -546,16 +997,16 @@
             }
             .nav-buttons button {
                 font-size: 0.85rem;
-                padding: 12px 8px;
+                padding: 13px 8px;
             }
             .modal-box {
                 padding: 30px 20px 26px;
             }
             .modal-box h3 {
-                font-size: 1.1rem;
+                font-size: 1.15rem;
             }
             .end-page .end-title {
-                font-size: 1.3rem;
+                font-size: 1.35rem;
             }
             .btn-primary {
                 font-size: 1rem;
@@ -563,7 +1014,7 @@
             }
             .part-label {
                 font-size: 0.65rem;
-                padding: 3px 12px;
+                padding: 4px 13px;
             }
             .progress-text {
                 font-size: 0.7rem;
@@ -572,24 +1023,24 @@
 
         @media (max-width: 420px) {
             .app-wrapper {
-                padding: 18px 12px 22px;
+                padding: 24px 14px 22px;
                 border-radius: 20px;
             }
             .title {
-                font-size: 1.2rem;
+                font-size: 1.25rem;
             }
             .home-page .title {
                 font-size: 1.3rem;
             }
             .question-text {
-                font-size: 0.95rem;
+                font-size: 1rem;
             }
             .nav-buttons {
                 flex-direction: column;
                 gap: 8px;
             }
             .nav-buttons button {
-                padding: 12px;
+                padding: 13px;
             }
         }
     </style>
@@ -605,7 +1056,36 @@
     <!-- ====== MODAL OVERLAY (Sebelum Memulai) ====== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
-            <div class="modal-icon">💕</div>
+            <div class="modal-icon heart-duo" aria-hidden="true">
+                <div class="heart-duo-orbit"></div>
+                <span class="sparkle sparkle-1">✦</span>
+                <span class="sparkle sparkle-2">✧</span>
+                <span class="sparkle sparkle-3">✦</span>
+                <span class="dot dot-1"></span>
+                <span class="dot dot-2"></span>
+                <svg class="heart-back" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heartBackFill" x1="0" y1="0" x2="0.2" y2="1">
+                            <stop offset="0%" stop-color="#FFEAF3"/>
+                            <stop offset="45%" stop-color="#F5A9C7"/>
+                            <stop offset="100%" stop-color="#D8799F"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 84 C 20 62, 4 42, 4 24 C 4 8, 18 -1, 32 4 C 42 7.5, 48 16, 50 22 C 52 16, 58 7.5, 68 4 C 82 -1, 96 8, 96 24 C 96 42, 80 62, 50 84 Z" fill="url(#heartBackFill)"/>
+                    <path d="M18 22 C 20 13, 28 8, 36 9" stroke="rgba(255,255,255,0.65)" stroke-width="4" stroke-linecap="round" fill="none"/>
+                </svg>
+                <svg class="heart-front" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="heartFrontFill" x1="0" y1="0" x2="0.2" y2="1">
+                            <stop offset="0%" stop-color="#FFF3F8"/>
+                            <stop offset="45%" stop-color="#F6B9D3"/>
+                            <stop offset="100%" stop-color="#E28FB0"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 84 C 20 62, 4 42, 4 24 C 4 8, 18 -1, 32 4 C 42 7.5, 48 16, 50 22 C 52 16, 58 7.5, 68 4 C 82 -1, 96 8, 96 24 C 96 42, 80 62, 50 84 Z" fill="url(#heartFrontFill)"/>
+                    <path d="M18 22 C 20 13, 28 8, 36 9" stroke="rgba(255,255,255,0.75)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                </svg>
+            </div>
             <h3>Sebelum Memulai</h3>
             <p>
                 Jawablah semua pertanyaan dengan sungguh-sungguh.<br /><br />
@@ -613,7 +1093,10 @@
                 Tidak apa-apa jika jawabanmu salah.<br />
                 Yang penting kamu benar-benar mencoba mengingat.
             </p>
-            <button class="btn-primary" id="modalStartBtn">💕 Mulai</button>
+            <button class="btn-primary btn-start" id="modalStartBtn">
+                <span class="btn-start-icon" aria-hidden="true">→</span>
+                <span class="btn-start-label">Mulai</span>
+            </button>
         </div>
     </div>
 
@@ -628,20 +1111,37 @@
             <!-- ===== HOME PAGE ===== -->
             <div class="page active home-page" id="homePage">
                 <div class="title-wrap">
+                    <div class="seal" aria-hidden="true"></div>
                     <div class="title">
-                        <span class="heart-icon">❤️</span> Seberapa Kenal Kamu Sama Aku? <span class="heart-icon">❤️</span>
+                        Seberapa Kenal Kamu Sama Aku?
+                    </div>
+                    <div class="divider" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 20s-7-4.6-9.5-9C.6 7.4 2.4 4 5.8 4 8 4 10 5.3 12 8c2-2.7 4-4 6.2-4 3.4 0 5.2 3.4 3.3 7-2.5 4.4-9.5 9-9.5 9Z"/></svg>
                     </div>
                     <p class="subtitle">
                         Website ini dibuat khusus untuk melihat seberapa dalam kamu mengenalku, bukan hanya tentang hal-hal sederhana, tetapi juga tentang perasaan, kebiasaan, dan siapa diriku sebenarnya.
                     </p>
                 </div>
                 <div style="text-align:center; margin-top: 12px;">
-                    <button class="btn-primary" id="startBtn">💕 Mulai</button>
+                    <button class="btn-primary btn-start" id="startBtn">
+                        <span class="btn-start-icon" aria-hidden="true">→</span>
+                        <span class="btn-start-label">Mulai</span>
+                    </button>
+                </div>
+                <div class="credit-line">
+                    <span class="credit-label">Pembuat</span>
+                    <span class="credit-arrow" aria-hidden="true">➝</span>
+                    <span class="credit-name">Ilham</span>
+                    <span class="credit-sep" aria-hidden="true">❃</span>
+                    <span class="credit-label">Untuk</span>
+                    <span class="credit-arrow" aria-hidden="true">➝</span>
+                    <span class="credit-name">Azza</span>
                 </div>
             </div>
 
             <!-- ===== QUIZ PAGE ===== -->
             <div class="page" id="quizPage">
+                <div class="seal seal--sm" aria-hidden="true"></div>
                 <div class="part-label" id="partLabel">Bagian 1 — Tentang Aku</div>
                 <div class="question-number" id="questionNumber">Pertanyaan 1 / 55</div>
                 <div class="question-text" id="questionText">Apa warna favoritku?</div>
@@ -663,17 +1163,47 @@
 
 <!-- ===== END PAGE ===== -->
             <div class="page end-page" id="endPage">
-                <div class="end-icon">🌸</div>
-                <div class="end-title">Terima kasih 💕</div>
+                <div class="heart-cluster" aria-hidden="true">
+                    <span class="glow-dot glow-dot-1"></span>
+                    <span class="glow-dot glow-dot-2"></span>
+                    <span class="mini-heart mini-heart-1">♥</span>
+                    <span class="mini-heart mini-heart-2">♥</span>
+                    <span class="mini-heart mini-heart-3">♥</span>
+                    <span class="sparkle-gold sparkle-gold-1">✦</span>
+                    <span class="sparkle-gold sparkle-gold-2">✧</span>
+                    <span class="sparkle-gold sparkle-gold-3">✦</span>
+                    <svg class="heart-back heart-back--lg" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="heartBackFillEnd" x1="0" y1="0" x2="0.2" y2="1">
+                                <stop offset="0%" stop-color="#FFEAF3"/>
+                                <stop offset="45%" stop-color="#F5A9C7"/>
+                                <stop offset="100%" stop-color="#D8799F"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M50 84 C 20 62, 4 42, 4 24 C 4 8, 18 -1, 32 4 C 42 7.5, 48 16, 50 22 C 52 16, 58 7.5, 68 4 C 82 -1, 96 8, 96 24 C 96 42, 80 62, 50 84 Z" fill="url(#heartBackFillEnd)"/>
+                        <path d="M18 22 C 20 13, 28 8, 36 9" stroke="rgba(255,255,255,0.65)" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    <svg class="heart-front heart-front--lg" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="heartFrontFillEnd" x1="0" y1="0" x2="0.2" y2="1">
+                                <stop offset="0%" stop-color="#FFF3F8"/>
+                                <stop offset="45%" stop-color="#F6B9D3"/>
+                                <stop offset="100%" stop-color="#E28FB0"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M50 84 C 20 62, 4 42, 4 24 C 4 8, 18 -1, 32 4 C 42 7.5, 48 16, 50 22 C 52 16, 58 7.5, 68 4 C 82 -1, 96 8, 96 24 C 96 42, 80 62, 50 84 Z" fill="url(#heartFrontFillEnd)"/>
+                        <path d="M18 22 C 20 13, 28 8, 36 9" stroke="rgba(255,255,255,0.75)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </div>
                 <div class="end-message">
-                    Terima kasih sudah meluangkan waktu menjawab semuanya.<br /><br />
-                    Website ini bukan dibuat untuk menguji siapa yang benar atau salah.<br /><br />
                     Aku hanya ingin tahu seberapa dalam kamu mengenalku.<br /><br />
                     Kalau ada jawabanmu yang belum tepat, semoga setelah ini kita bisa saling mengenal lebih baik lagi.<br /><br />
                     Karena bagiku, hubungan yang indah bukan tentang siapa yang paling sempurna, melainkan siapa yang terus belajar memahami pasangannya.
                 </div>
-                <button class="btn-primary" id="submitBtn">💕 Kirim Jawaban</button>
-                <button class="btn-primary" id="sendWaBtn" style="margin-top:12px; background:#25D366;">📲 Kirim Jawaban ke WhatsApp</button>
+                <button class="btn-primary btn-start" id="sendWaBtn">
+                    <span class="btn-start-icon" aria-hidden="true">→</span>
+                    <span class="btn-start-label">Kirim Jawaban ke WhatsApp Anomali</span>
+                </button>
             </div>
 
         </div><!-- /content -->
@@ -782,7 +1312,6 @@
         const progressText = document.getElementById('progressText');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
         const sendWaBtn = document.getElementById('sendWaBtn');
 
         const confettiContainer = document.getElementById('confettiContainer');
@@ -793,10 +1322,28 @@
         //  KATA TERLARANG (validasi)
         // ============================================================
         const forbiddenWords = [
-            'gatau', 'ga tau', 'gak tau', 'gk tau', 'nggak tau', 'tidak tahu',
-            'entah', 'mboh', 'mungkin', 'lupa', 'bingung', 'terserah', 'bebas',
-            'skip', '...', '-', '?', '🤷', '🤷‍♂️', '🤷‍♀️', '😅', '😐', '🤔'
-        ];
+    'gatau', 'ga tau', 'gak tau', 'gk tau', 'nggak tau', 'enggak tau',
+    'tidak tahu', 'tak tahu', 'kurang tau', 'kurang tahu',
+    'ga ngerti', 'gak ngerti', 'gk ngerti', 'nggak ngerti',
+    'tidak ngerti', 'tak ngerti', 'ga paham', 'gak paham',
+    'tidak paham', 'entah', 'entahlah', 'mboh',
+    'mungkin', 'kayaknya', 'sepertinya', 'barangkali',
+    'kemungkinan', 'bisa jadi', 'lupa', 'udah lupa',
+    'aku lupa', 'saya lupa', 'bingung', 'terserah',
+    'bebas', 'skip', 'pass', 'next', 'rahasia',
+    'ga mau jawab', 'gak mau jawab', 'tidak mau jawab',
+    'no idea', 'idk', "i don't know", 'dont know',
+    'unknown', 'i dont know', 'not sure', 'who knows',
+    'forgot', 'forgotten', "can't remember",
+    'cant remember', "don't remember", 'dont remember',
+    'confused', 'clueless', 'no comment', 'nocomment',
+    'no answer', 'none', 'nothing', 'kosong', 'blank',
+    '', ' ', '.', '..', '...', '-', '--', '_',
+    '?', '??', '???', 'wkwk', 'wk', 'hehe',
+    'hmm', 'hm', 'eh', 'yaudah',
+    '🤷', '🤷‍♂️', '🤷‍♀️', '😅', '😐', '🤔',
+    '🙃', '😶', '😶‍🌫️', '🫠', '😑', '🙄'
+];
 
         function cleanText(text) {
             return text.toLowerCase()
@@ -805,9 +1352,83 @@
                 .trim();
         }
 
-        function isForbidden(input) {
+        // Regex: menolak input yang hanya terdiri dari 1 huruf alfabet (A-Z / a-z)
+        const singleLetterRegex = /^[a-zA-Z]$/;
+
+        // ============================================================
+        //  DETEKSI TEKS ACAK / GIBBERISH (tanpa daftar kata)
+        // ============================================================
+        // Kata dibawah panjang ini tidak dicek (biar jawaban valid yang
+        // pendek seperti "iya", "no", "yes" tidak ikut ke-block)
+        const GIBBERISH_MIN_LENGTH = 5;
+
+        // Deret huruf berurutan pada keyboard QWERTY, misal "qwerty", "asdfgh", "zxcvbn"
+        const KEYBOARD_ROWS = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
+
+        function isGibberishWord(word) {
+            // Hanya cek kata murni alfabet (biar tidak salah tangkap angka/kode)
+            if (word.length < GIBBERISH_MIN_LENGTH || !/^[a-z]+$/.test(word)) {
+                return false;
+            }
+
+            const vowelCount = (word.match(/[aeiou]/g) || []).length;
+            const vowelRatio = vowelCount / word.length;
+
+            // 1) Huruf vokal terlalu sedikit dibanding panjang kata
+            //    (kata wajar Indonesia/Inggris selalu punya proporsi vokal yang cukup)
+            if (vowelRatio < 0.2) return true;
+
+            // 2) Konsonan beruntun berlebihan (>=4 konsonan tanpa vokal di antaranya)
+            if (/[^aeiou]{4,}/.test(word)) return true;
+
+            // 3) Pengulangan suku kata/pola karakter berlebihan, misal "asdasdasd", "hahaha"
+            if (/^(.{1,4})\1{2,}$/.test(word)) return true;
+
+            // 4) Deret huruf berurutan pada keyboard QWERTY, misal "qwertyui", "zxcvbnm"
+            if (KEYBOARD_ROWS.some(row => row.includes(word))) return true;
+
+            return false;
+        }
+
+        function isGibberish(input) {
+            const cleaned = cleanText(input);
+            if (!cleaned) return false;
+            return cleaned.split(' ').some(isGibberishWord);
+        }
+
+        // ============================================================
+        //  DETEKSI PENGULANGAN JAWABAN SATU KATA
+        // ============================================================
+        // Hanya berlaku jika jawaban (setelah dibersihkan) benar-benar
+        // terdiri dari satu kata saja. Jawaban berupa kalimat/lebih dari
+        // satu kata tidak pernah diblokir oleh fungsi ini.
+        function isDuplicateSingleWordAnswer(input, index = currentIndex) {
+            const cleaned = cleanText(input);
+            if (!cleaned) return false;
+
+            const words = cleaned.split(' ');
+            if (words.length !== 1) return false; // bukan jawaban satu kata
+
+            const word = words[0];
+
+            return answers.some((savedAnswer, i) => {
+                if (i === index) return false; // jangan bandingkan dgn pertanyaan yg sedang diisi
+                if (!savedAnswer) return false;
+
+                const savedCleaned = cleanText(savedAnswer);
+                const savedWords = savedCleaned.split(' ');
+                if (savedWords.length !== 1) return false; // jawaban lain bukan satu kata
+
+                return savedWords[0] === word;
+            });
+        }
+
+        function isForbidden(input, index = currentIndex) {
             const cleaned = cleanText(input);
             if (cleaned === '') return true;
+            if (singleLetterRegex.test(cleaned)) return true;
+            if (isGibberish(input)) return true;
+            if (isDuplicateSingleWordAnswer(input, index)) return true;
             return forbiddenWords.some(word => {
                 const cw = cleanText(word);
                 return cleaned === cw;
@@ -926,14 +1547,46 @@
             box.style.padding = '34px 28px 30px';
             box.style.textAlign = 'center';
             box.innerHTML = `
-                <div style="font-size:2.8rem; margin-bottom:4px;">❤️</div>
-                <h3 style="font-size:1.2rem; font-weight:600; color:#2d1b26; margin-bottom:10px;">Jangan menyerah ya.</h3>
-                <p style="font-size:0.95rem; color:#4d3542; line-height:1.7; margin-bottom:18px;">
+                <div class="modal-icon heart-duo" aria-hidden="true" style="height:96px; margin-bottom:2px;">
+                    <div class="heart-duo-orbit"></div>
+                    <span class="sparkle sparkle-1">✦</span>
+                    <span class="sparkle sparkle-2">✧</span>
+                    <span class="sparkle sparkle-3">✦</span>
+                    <span class="dot dot-1"></span>
+                    <span class="dot dot-2"></span>
+                    <svg class="heart-back" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="heartBackFillPopup" x1="0" y1="0" x2="0.2" y2="1">
+                                <stop offset="0%" stop-color="#FFEAF3"/>
+                                <stop offset="45%" stop-color="#F5A9C7"/>
+                                <stop offset="100%" stop-color="#D8799F"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M50 84 C 20 62, 4 42, 4 24 C 4 8, 18 -1, 32 4 C 42 7.5, 48 16, 50 22 C 52 16, 58 7.5, 68 4 C 82 -1, 96 8, 96 24 C 96 42, 80 62, 50 84 Z" fill="url(#heartBackFillPopup)"/>
+                        <path d="M18 22 C 20 13, 28 8, 36 9" stroke="rgba(255,255,255,0.65)" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </svg>
+                    <svg class="heart-front" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="heartFrontFillPopup" x1="0" y1="0" x2="0.2" y2="1">
+                                <stop offset="0%" stop-color="#FFF3F8"/>
+                                <stop offset="45%" stop-color="#F6B9D3"/>
+                                <stop offset="100%" stop-color="#E28FB0"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M50 84 C 20 62, 4 42, 4 24 C 4 8, 18 -1, 32 4 C 42 7.5, 48 16, 50 22 C 52 16, 58 7.5, 68 4 C 82 -1, 96 8, 96 24 C 96 42, 80 62, 50 84 Z" fill="url(#heartFrontFillPopup)"/>
+                        <path d="M18 22 C 20 13, 28 8, 36 9" stroke="rgba(255,255,255,0.75)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </div>
+                <h3 style="margin-bottom:10px;">Jangan menyerah ya.</h3>
+                <p style="font-size:0.95rem; color:var(--ink-soft); line-height:1.7; margin-bottom:18px;">
                     Aku membuat website ini bukan supaya kamu menjawab "gak tahu", tapi supaya kamu mencoba mengingat siapa aku.<br><br>
                     Tidak apa-apa salah.<br>
                     Yang penting kamu berusaha.
                 </p>
-                <button class="btn-primary" style="width:100%;" id="forbiddenOkBtn">💕 Baik, aku coba lagi</button>
+                <button class="btn-primary btn-start" style="width:100%;" id="forbiddenOkBtn">
+                    <span class="btn-start-icon" aria-hidden="true">→</span>
+                    <span class="btn-start-label">Baik, aku coba lagi</span>
+                </button>
             `;
 
             overlay.appendChild(box);
@@ -1112,29 +1765,12 @@
         prevBtn.addEventListener('click', prevQuestion);
         nextBtn.addEventListener('click', nextQuestion);
 
- // Submit (halaman akhir)
-        submitBtn.addEventListener('click', () => {
-            // Efek klik
-            submitBtn.style.transform = 'scale(0.94)';
-            setTimeout(() => submitBtn.style.transform = '', 200);
-
-            // Tampilkan ucapan terima kasih + confetti lagi
-            launchConfetti();
-            launchEndHearts();
-            // Ubah teks tombol sementara
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = '💕 Terima kasih!';
-            submitBtn.disabled = true;
-            setTimeout(() => {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 3000);
-        });
-
         // Kirim jawaban ke WhatsApp
         sendWaBtn.addEventListener('click', () => {
             sendWaBtn.style.transform = 'scale(0.94)';
             setTimeout(() => sendWaBtn.style.transform = '', 200);
+            launchConfetti();
+            launchEndHearts();
             sendAnswersToWhatsApp();
         });
 
