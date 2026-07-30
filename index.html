@@ -1143,7 +1143,7 @@
             <div class="page" id="quizPage">
                 <div class="seal seal--sm" aria-hidden="true"></div>
                 <div class="part-label" id="partLabel">Bagian 1 — Tentang Aku</div>
-                <div class="question-number" id="questionNumber">Pertanyaan 1 / 55</div>
+                <div class="question-number" id="questionNumber">Pertanyaan 1 / 100</div>
                 <div class="question-text" id="questionText">Apa warna favoritku?</div>
 
                 <textarea class="answer-input" id="answerInput" placeholder="Ketik jawabanmu di sini..." rows="2"></textarea>
@@ -1211,7 +1211,7 @@
 
     <script>
         // ============================================================
-        //  DATA PERTANYAAN (55)
+        //  DATA PERTANYAAN (100)
         // ============================================================
         const questions = [
             // Bagian 1 — Tentang Aku (1-10)
@@ -1247,33 +1247,83 @@
             { id: 28, part: 3, text: "Hal apa yang membuatku merasa tidak dihargai?" },
             { id: 29, part: 3, text: "Menurutmu apa ketakutan terbesarku?" },
             { id: 30, part: 3, text: "Apa yang membuatku merasa dicintai?" },
-            // Bagian 4 — Deep Talk (31-45)
-            { id: 31, part: 4, text: "Menurutmu aku orang seperti apa?" },
-            { id: 32, part: 4, text: "Apa karakterku yang paling menonjol?" },
-            { id: 33, part: 4, text: "Aku lebih mengandalkan logika atau perasaan?" },
-            { id: 34, part: 4, text: "Kalau aku memendam masalah biasanya bagaimana?" },
-            { id: 35, part: 4, text: "Kapan menurutmu aku benar-benar merasa hancur?" },
-            { id: 36, part: 4, text: "Apa yang membuatku kehilangan semangat?" },
-            { id: 37, part: 4, text: "Kalau aku mulai menjauh menurutmu kenapa?" },
-            { id: 38, part: 4, text: "Apa tanda kalau aku sudah lelah?" },
-            { id: 39, part: 4, text: "Apa tanda kalau aku sudah benar-benar muak?" },
-            { id: 40, part: 4, text: "Kalau aku menyerah biasanya bagaimana sikapku?" },
-            { id: 41, part: 4, text: "Aku mudah memaafkan atau sulit melupakan?" },
-            { id: 42, part: 4, text: "Apa yang paling ingin aku dengar saat rapuh?" },
-            { id: 43, part: 4, text: "Apa ketakutan terbesarku dalam hubungan?" },
-            { id: 44, part: 4, text: "Menurutmu love language-ku apa?" },
-            { id: 45, part: 4, text: "Apa yang paling aku butuhkan dari pasangan?" },
-            // Bagian 5 — Tentang Kita (46-55)
-            { id: 46, part: 5, text: "Menurutmu kenapa aku memilih kamu?" },
-            { id: 47, part: 5, text: "Apa yang paling aku sukai dari kamu?" },
-            { id: 48, part: 5, text: "Apa harapanku dalam hubungan ini?" },
-            { id: 49, part: 5, text: "Kalau kita bertengkar aku ingin diperlakukan seperti apa?" },
-            { id: 50, part: 5, text: "Menurutmu apakah kamu benar-benar mengenalku? Jelaskan." },
-            { id: 51, part: 5, text: "Jelaskan aku dalam tiga kata." },
-            { id: 52, part: 5, text: "Apa yang bisa kamu lakukan agar aku merasa lebih dicintai?" },
-            { id: 53, part: 5, text: "Apa yang paling aku takutkan dalam hubungan ini?" },
-            { id: 54, part: 5, text: "Apa janjimu setelah mengerjakan website ini?" },
-            { id: 55, part: 5, text: "Menurutmu aku sayang kamu nggak? Kenapa?" }
+            // Bagian 4 — Tentang Kita (31-40)
+            { id: 31, part: 4, text: "Menurutmu kenapa aku memilih kamu?" },
+            { id: 32, part: 4, text: "Apa yang paling aku sukai dari kamu?" },
+            { id: 33, part: 4, text: "Apa harapanku dalam hubungan ini?" },
+            { id: 34, part: 4, text: "Kalau kita bertengkar aku ingin diperlakukan seperti apa?" },
+            { id: 35, part: 4, text: "Menurutmu apakah kamu benar-benar mengenalku? Jelaskan." },
+            { id: 36, part: 4, text: "Jelaskan aku dalam tiga kata." },
+            { id: 37, part: 4, text: "Apa yang bisa kamu lakukan agar aku merasa lebih dicintai?" },
+            { id: 38, part: 4, text: "Apa yang paling aku takutkan dalam hubungan ini?" },
+            { id: 39, part: 4, text: "Apa janjimu setelah mengerjakan website ini?" },
+            { id: 40, part: 4, text: "Menurutmu aku sayang kamu nggak? Kenapa?" },
+            // Bagian 5 — Kenangan Kita (41-50)
+            { id: 41, part: 5, text: "Apa momen pertama yang paling berkesan di antara kita?" },
+            { id: 42, part: 5, text: "Apa hal pertama yang membuatku merasa nyaman denganmu?" },
+            { id: 43, part: 5, text: "Kenangan apa yang menurutmu paling sering kuingat saat kita berjauhan?" },
+            { id: 44, part: 5, text: "Kalau bisa mengulang satu hari bersama, menurutmu hari apa yang akan kupilih?" },
+            { id: 45, part: 5, text: "Apa kejadian paling lucu yang pernah kita alami bersama?" },
+            { id: 46, part: 5, text: "Momen apa yang menurutmu membuat hubungan kita semakin dekat?" },
+            { id: 47, part: 5, text: "Apa hal kecil yang pernah kamu lakukan hingga membuatku sangat bahagia?" },
+            { id: 48, part: 5, text: "Kalau suatu hari nanti kita mengenang masa sekarang, momen apa yang paling ingin aku ingat?" },
+            { id: 49, part: 5, text: "Menurutmu, kenangan apa yang akan selalu menjadi cerita favorit kita?" },
+            { id: 50, part: 5, text: "Apa pelajaran paling berharga yang kita dapatkan dari perjalanan hubungan kita?" },
+            // Bagian 6 — Kepercayaan & Komitmen (51-59)
+            { id: 51, part: 6, text: "Menurutmu, apa arti kesetiaan bagiku?" },
+            { id: 52, part: 6, text: "Hal apa yang paling bisa membuatku kehilangan kepercayaan?" },
+            { id: 53, part: 6, text: "Apa yang membuatku yakin untuk tetap bertahan dalam hubungan?" },
+            { id: 54, part: 6, text: "Kalau kita punya masalah besar, menurutmu aku ingin menyelesaikannya seperti apa?" },
+            { id: 55, part: 6, text: "Apa yang paling aku hargai dari sebuah komitmen?" },
+            { id: 56, part: 6, text: "Menurutmu, apa bukti cinta yang paling berarti bagiku?" },
+            { id: 57, part: 6, text: "Hal apa yang menurutmu tidak boleh ada dalam hubungan kita?" },
+            { id: 58, part: 6, text: "Apa yang paling aku takutkan jika suatu hari kita berubah?" },
+            { id: 59, part: 6, text: "Menurutmu, apa yang membuat hubungan kita tetap bertahan?" },
+            // Bagian 7 — Masa Depan Kita (60-68)
+            { id: 60, part: 7, text: "Menurutmu, impian terbesar yang ingin aku capai bersama kamu apa?" },
+            { id: 61, part: 7, text: "Kalau kita liburan bersama, menurutmu aku ingin pergi ke mana?" },
+            { id: 62, part: 7, text: "Rumah impian seperti apa yang menurutmu aku inginkan?" },
+            { id: 63, part: 7, text: "Apa tujuan terbesar yang ingin aku capai dalam hidup?" },
+            { id: 64, part: 7, text: "Menurutmu, bagaimana aku membayangkan masa depan kita?" },
+            { id: 65, part: 7, text: "Hal apa yang paling ingin aku lakukan bersamamu sebelum terlambat?" },
+            { id: 66, part: 7, text: "Kalau suatu hari kita sukses, menurutmu apa yang pertama kali ingin aku lakukan?" },
+            { id: 67, part: 7, text: "Menurutmu, apa harapan terbesarku untuk hubungan ini?" },
+            { id: 68, part: 7, text: "Kalau kita tetap bersama sampai tua, menurutmu seperti apa kehidupan yang aku inginkan?" },
+            // Bagian 8 — Seberapa Mengenalku (69-77)
+            { id: 69, part: 8, text: "Apa kebiasaan kecilku yang mungkin hanya kamu yang sadar?" },
+            { id: 70, part: 8, text: "Kalau aku sedang berpura-pura baik-baik saja, apa tandanya?" },
+            { id: 71, part: 8, text: "Apa hal yang selalu berhasil membuat mood-ku membaik?" },
+            { id: 72, part: 8, text: "Menurutmu, siapa orang yang paling berpengaruh dalam hidupku?" },
+            { id: 73, part: 8, text: "Apa yang menurutmu paling aku banggakan dari diriku sendiri?" },
+            { id: 74, part: 8, text: "Kalau aku sedang diam lama, menurutmu apa yang biasanya sedang kupikirkan?" },
+            { id: 75, part: 8, text: "Apa kebiasaan burukku yang paling sering kamu lihat?" },
+            { id: 76, part: 8, text: "Menurutmu, apa impian masa kecilku?" },
+            { id: 77, part: 8, text: "Apa hal yang menurutmu belum pernah aku tunjukkan kepada siapa pun selain kamu?" },
+            // Bagian 9 — Deep Talk (78-92)
+            { id: 78, part: 9, text: "Menurutmu aku orang seperti apa?" },
+            { id: 79, part: 9, text: "Apa karakterku yang paling menonjol?" },
+            { id: 80, part: 9, text: "Aku lebih mengandalkan logika atau perasaan?" },
+            { id: 81, part: 9, text: "Kalau aku memendam masalah biasanya bagaimana?" },
+            { id: 82, part: 9, text: "Kapan menurutmu aku benar-benar merasa hancur?" },
+            { id: 83, part: 9, text: "Apa yang membuatku kehilangan semangat?" },
+            { id: 84, part: 9, text: "Kalau aku mulai menjauh menurutmu kenapa?" },
+            { id: 85, part: 9, text: "Apa tanda kalau aku sudah lelah?" },
+            { id: 86, part: 9, text: "Apa tanda kalau aku sudah benar-benar muak?" },
+            { id: 87, part: 9, text: "Kalau aku menyerah biasanya bagaimana sikapku?" },
+            { id: 88, part: 9, text: "Aku mudah memaafkan atau sulit melupakan?" },
+            { id: 89, part: 9, text: "Apa yang paling ingin aku dengar saat rapuh?" },
+            { id: 90, part: 9, text: "Apa ketakutan terbesarku dalam hubungan?" },
+            { id: 91, part: 9, text: "Menurutmu love language-ku apa?" },
+            { id: 92, part: 9, text: "Apa yang paling aku butuhkan dari pasangan?" },
+            // Bagian 10 — Penutup (93-100)
+            { id: 93, part: 10, text: "Kalau harus menggambarkanku dalam lima kata, apa saja?" },
+            { id: 94, part: 10, text: "Apa satu hal yang ingin kamu ucapkan kepadaku tetapi belum pernah kamu katakan?" },
+            { id: 95, part: 10, text: "Apa yang paling kamu syukuri sejak mengenalku?" },
+            { id: 96, part: 10, text: "Kalau suatu hari aku sedang benar-benar terpuruk, apa yang akan kamu lakukan?" },
+            { id: 97, part: 10, text: "Kalau kamu harus membuat satu janji kepadaku, apa janjimu?" },
+            { id: 98, part: 10, text: "Setelah menjawab semua pertanyaan ini, apa yang kamu pelajari tentang diriku?" },
+            { id: 99, part: 10, text: "Tuliskan pesan terakhir yang ingin kamu sampaikan untukku dari hati yang paling dalam." },
+            { id: 100, part: 10, text: "Menurutmu, apakah hubungan kita layak untuk terus diperjuangkan? Jelaskan alasannya." }
         ];
 
         const totalQuestions = questions.length;
@@ -1283,8 +1333,13 @@
             1: "Bagian 1 — Tentang Aku",
             2: "Bagian 2 — Kebiasaan",
             3: "Bagian 3 — Mengenal Perasaanku",
-            4: "Bagian 4 — Deep Talk",
-            5: "Bagian 5 — Tentang Kita"
+            4: "Bagian 4 — Tentang Kita",
+            5: "Bagian 5 — Kenangan Kita",
+            6: "Bagian 6 — Kepercayaan & Komitmen",
+            7: "Bagian 7 — Masa Depan Kita",
+            8: "Bagian 8 — Seberapa Mengenalku",
+            9: "Bagian 9 — Deep Talk",
+            10: "Bagian 10 — Penutup"
         };
 
         // ============================================================
