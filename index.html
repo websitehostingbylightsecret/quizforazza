@@ -1043,6 +1043,99 @@
                 padding: 13px;
             }
         }
+        /* ============================================================
+           MAGIC TRANSITION (tambahan — tidak mengubah style di atas)
+           Efek partikel sihir pink + overlay bloom saat tombol "Mulai"
+           pada modal ditekan, sebelum berpindah ke halaman kuis.
+        ============================================================ */
+        .magic-transition-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9998;
+            pointer-events: none;
+            opacity: 0;
+            background:
+                radial-gradient(circle at var(--origin-x, 50%) var(--origin-y, 50%),
+                    rgba(255, 220, 235, 0.65) 0%,
+                    rgba(248, 215, 232, 0.45) 35%,
+                    rgba(253, 243, 247, 0.18) 65%,
+                    rgba(253, 243, 247, 0) 100%);
+            -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+            transition: opacity 0.55s ease, -webkit-backdrop-filter 0.55s ease, backdrop-filter 0.55s ease;
+            will-change: opacity, backdrop-filter;
+        }
+        .magic-transition-overlay.is-active {
+            opacity: 1;
+            -webkit-backdrop-filter: blur(7px);
+            backdrop-filter: blur(7px);
+        }
+        .magic-transition-overlay.is-fading {
+            opacity: 0;
+            -webkit-backdrop-filter: blur(0px);
+            backdrop-filter: blur(0px);
+            transition: opacity 0.6s ease, -webkit-backdrop-filter 0.6s ease, backdrop-filter 0.6s ease;
+        }
+
+        .magic-particle {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fffdfe 0%, #ffd6ea 45%, rgba(255, 182, 213, 0) 75%);
+            box-shadow:
+                0 0 6px 1px rgba(255, 200, 225, 0.85),
+                0 0 14px 3px rgba(248, 215, 232, 0.55);
+            opacity: 0;
+            will-change: transform, opacity;
+            animation-name: fairyDustDrift;
+            animation-timing-function: ease-out;
+            animation-fill-mode: forwards;
+        }
+        @keyframes fairyDustDrift {
+            0% {
+                transform: translate(0, 0) scale(0.25);
+                opacity: 0;
+            }
+            18% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 0.85;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(var(--pscale));
+                opacity: 0;
+            }
+        }
+
+        /* Kilau lembut pada tombol saat animasi berjalan (tidak mengubah gaya dasar tombol) */
+        .btn-start.is-casting {
+            animation: btnSoftBloom 1.05s ease-out;
+        }
+        @keyframes btnSoftBloom {
+            0% {
+                box-shadow: 0 0 0 0 rgba(248, 200, 225, 0.55);
+            }
+            40% {
+                box-shadow: 0 0 26px 10px rgba(248, 200, 225, 0.55);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(248, 200, 225, 0);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .magic-particle,
+            .btn-start.is-casting {
+                animation: none !important;
+            }
+            .magic-transition-overlay {
+                transition: opacity 0.3s ease !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1793,6 +1886,105 @@
         initBackgroundHearts();
 
         // ============================================================
+        //  MAGIC TRANSITION (partikel sihir + overlay bloom pink)
+        //  Tambahan animasi transisi saja — tidak mengubah fitur lain.
+        // ============================================================
+        let magicOverlayEl = null;
+
+        function getMagicOverlay() {
+            if (!magicOverlayEl) {
+                magicOverlayEl = document.createElement('div');
+                magicOverlayEl.className = 'magic-transition-overlay';
+                document.body.appendChild(magicOverlayEl);
+            }
+            return magicOverlayEl;
+        }
+
+        function spawnFairyDust(originX, originY) {
+            const total = window.innerWidth < 640 ? 16 : 26; // lebih ringan di mobile
+            const frag = document.createDocumentFragment();
+            const created = [];
+
+            for (let i = 0; i < total; i++) {
+                const p = document.createElement('div');
+                p.className = 'magic-particle';
+                const size = 3 + Math.random() * 5;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.transform = `translate(${originX}px, ${originY}px)`;
+                p.style.left = '0px';
+                p.style.top = '0px';
+
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 40 + Math.random() * 130;
+                const dx = originX + Math.cos(angle) * dist;
+                const dy = originY + Math.sin(angle) * dist - (20 + Math.random() * 40); // sedikit melayang ke atas, seperti debu peri
+                p.style.setProperty('--dx', dx + 'px');
+                p.style.setProperty('--dy', dy + 'px');
+                p.style.setProperty('--pscale', (0.5 + Math.random() * 0.9).toFixed(2));
+
+                const duration = 0.9 + Math.random() * 0.6;
+                const delay = Math.random() * 0.18;
+                p.style.animationDuration = duration + 's';
+                p.style.animationDelay = delay + 's';
+
+                frag.appendChild(p);
+                created.push({ el: p, life: (duration + delay) * 1000 + 120 });
+            }
+            document.body.appendChild(frag);
+
+            created.forEach(item => {
+                setTimeout(() => item.el.remove(), item.life);
+            });
+        }
+
+        /**
+         * Menjalankan animasi transisi "sihir" pink dari sebuah tombol,
+         * lalu menjalankan callback (pindah halaman) di tengah animasi,
+         * dan memudarkan overlay setelahnya.
+         */
+        function runMagicTransition(triggerBtn, onReachMidpoint) {
+            if (!triggerBtn || triggerBtn.dataset.magicBusy === '1') return;
+            triggerBtn.dataset.magicBusy = '1';
+            triggerBtn.disabled = true;
+            triggerBtn.classList.add('is-casting');
+
+            const rect = triggerBtn.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+
+            spawnFairyDust(originX, originY);
+
+            const overlay = getMagicOverlay();
+            overlay.style.setProperty('--origin-x', (originX / window.innerWidth * 100) + '%');
+            overlay.style.setProperty('--origin-y', (originY / window.innerHeight * 100) + '%');
+            overlay.classList.remove('is-fading');
+            void overlay.offsetWidth; // reflow agar transisi ke 'is-active' selalu jalan mulus
+            overlay.classList.add('is-active');
+
+            // Musik mulai tepat saat animasi dimulai
+            startBackgroundMusic();
+
+            const HOLD_MS = 1200; // ±1-1.5 detik sesuai spesifikasi
+            const FADE_MS = 600;
+
+            setTimeout(() => {
+                if (typeof onReachMidpoint === 'function') {
+                    onReachMidpoint();
+                }
+                overlay.classList.remove('is-active');
+                overlay.classList.add('is-fading');
+
+                setTimeout(() => {
+                    overlay.classList.remove('is-fading');
+                    triggerBtn.disabled = false;
+                    triggerBtn.classList.remove('is-casting');
+                    triggerBtn.dataset.magicBusy = '0';
+                }, FADE_MS);
+            }, HOLD_MS);
+        }
+
+        // ============================================================
         //  EVENT LISTENERS
         // ============================================================
 
@@ -1828,19 +2020,22 @@
 
         // Tombol Mulai di Home
         startBtn.addEventListener('click', () => {
-            startBackgroundMusic();
-            modalOverlay.classList.add('active');
+            runMagicTransition(startBtn, () => {
+                modalOverlay.classList.add('active');
+            });
         });
 
         // Tombol Mulai di Modal
         modalStartBtn.addEventListener('click', () => {
-            modalOverlay.classList.remove('active');
-            // Pindah ke quiz
-            homePage.classList.remove('active');
-            homePage.style.display = 'none';
-            quizPage.classList.add('active');
-            quizPage.style.display = 'block';
-            renderQuestion(0);
+            runMagicTransition(modalStartBtn, () => {
+                modalOverlay.classList.remove('active');
+                // Pindah ke quiz
+                homePage.classList.remove('active');
+                homePage.style.display = 'none';
+                quizPage.classList.add('active');
+                quizPage.style.display = 'block';
+                renderQuestion(0);
+            });
         });
 
         // Tutup modal dengan klik di luar
