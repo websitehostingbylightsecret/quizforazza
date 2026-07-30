@@ -1047,6 +1047,11 @@
 </head>
 <body>
 
+    <!-- ====== BACKGROUND MUSIC (YouTube IFrame API - hidden player) ====== -->
+    <div id="yt-bg-music-wrapper" style="position:fixed; top:-9999px; left:-9999px; width:1px; height:1px; overflow:hidden; pointer-events:none;" aria-hidden="true">
+        <div id="ytBgPlayer"></div>
+    </div>
+
     <!-- ====== CONFETTI CONTAINER ====== -->
     <div class="confetti-container" id="confettiContainer"></div>
 
@@ -1208,6 +1213,9 @@
 
         </div><!-- /content -->
     </div><!-- /app-wrapper -->
+
+    <!-- ====== YOUTUBE IFRAME API (background music) ====== -->
+    <script src="https://www.youtube.com/iframe_api"></script>
 
     <script>
         // ============================================================
@@ -1372,6 +1380,80 @@
         const confettiContainer = document.getElementById('confettiContainer');
         const endHearts = document.getElementById('endHearts');
         const heartsBg = document.getElementById('heartsBg');
+
+        // ============================================================
+        //  BACKGROUND MUSIC (YouTube IFrame API)
+        // ============================================================
+        const BG_MUSIC_VIDEO_ID = 'F6Gx0H6guro';
+        let ytBgPlayer = null;
+        let ytBgReady = false;
+        let ytBgShouldPlay = false; // true kalau user sudah klik "Mulai" sebelum player siap
+
+        // Dipanggil otomatis oleh YouTube IFrame API begitu script-nya selesai load
+        function onYouTubeIframeAPIReady() {
+            try {
+                ytBgPlayer = new YT.Player('ytBgPlayer', {
+                    height: '1',
+                    width: '1',
+                    videoId: BG_MUSIC_VIDEO_ID,
+                    playerVars: {
+                        autoplay: 0,
+                        controls: 0,
+                        disablekb: 1,
+                        fs: 0,
+                        modestbranding: 1,
+                        loop: 1,
+                        playlist: BG_MUSIC_VIDEO_ID, // wajib diisi agar loop:1 berfungsi untuk single video
+                        playsinline: 1,
+                        rel: 0
+                    },
+                    events: {
+                        onReady: (e) => {
+                            ytBgReady = true;
+                            try {
+                                e.target.setVolume(20);
+                            } catch (err) {}
+                            if (ytBgShouldPlay) {
+                                playBgMusic();
+                            }
+                        },
+                        onStateChange: (e) => {
+                            // Jaga-jaga: kalau video berhenti (ended) tapi loop gagal, putar ulang manual
+                            if (e.data === YT.PlayerState.ENDED) {
+                                try {
+                                    e.target.seekTo(0);
+                                    e.target.playVideo();
+                                } catch (err) {}
+                            }
+                        }
+                    }
+                });
+            } catch (err) {
+                // Jangan sampai error JS mengganggu fitur lain
+                console.warn('Gagal inisialisasi background music:', err);
+            }
+        }
+
+        // Fungsi aman untuk memutar musik — bisa dipanggil kapan pun,
+        // tidak akan restart kalau musik sudah berjalan.
+        function playBgMusic() {
+            ytBgShouldPlay = true;
+            if (!ytBgReady || !ytBgPlayer) {
+                return; // nanti otomatis diputar saat onReady
+            }
+            try {
+                const state = ytBgPlayer.getPlayerState ? ytBgPlayer.getPlayerState() : -1;
+                // Hanya play kalau belum playing (1) dan belum buffering (3) menuju play
+                if (state !== 1 && state !== 3) {
+                    ytBgPlayer.playVideo();
+                }
+                if (ytBgPlayer.setVolume) {
+                    ytBgPlayer.setVolume(20);
+                }
+            } catch (err) {
+                console.warn('Gagal memutar background music:', err);
+            }
+        }
 
         // ============================================================
         //  KATA TERLARANG (validasi)
@@ -1796,11 +1878,13 @@
         // Tombol Mulai di Home
         startBtn.addEventListener('click', () => {
             modalOverlay.classList.add('active');
+            playBgMusic(); // mulai background music, aman dipanggil berkali-kali (tidak restart)
         });
 
         // Tombol Mulai di Modal
         modalStartBtn.addEventListener('click', () => {
             modalOverlay.classList.remove('active');
+            playBgMusic(); // jaga-jaga (idempotent): tidak akan restart kalau musik sudah main
             // Pindah ke quiz
             homePage.classList.remove('active');
             homePage.style.display = 'none';
