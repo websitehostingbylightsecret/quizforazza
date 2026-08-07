@@ -1445,6 +1445,47 @@
         const answers = new Array(totalQuestions).fill('');
 
         // ============================================================
+        //  AUTO SAVE PROGRESS (localStorage)
+        //  Tidak mengubah desain/fitur — hanya menyimpan & memulihkan
+        //  jawaban serta posisi soal agar quiz bisa dilanjutkan.
+        // ============================================================
+        const QUIZ_STORAGE_KEY = 'quizProgress_seberapaKenalKamu';
+
+        function saveQuizProgress() {
+            try {
+                const data = {
+                    currentIndex: currentIndex,
+                    answers: answers,
+                    atEndPage: typeof endPage !== 'undefined' && endPage.classList.contains('active')
+                };
+                localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(data));
+            } catch (e) {
+                // localStorage tidak tersedia (mis. mode private) — abaikan secara diam-diam
+            }
+        }
+
+        function loadQuizProgress() {
+            try {
+                const raw = localStorage.getItem(QUIZ_STORAGE_KEY);
+                if (!raw) return null;
+                const data = JSON.parse(raw);
+                if (!data || !Array.isArray(data.answers) || data.answers.length !== totalQuestions) return null;
+                if (typeof data.currentIndex !== 'number' || data.currentIndex < 0 || data.currentIndex >= totalQuestions) return null;
+                return data;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function clearQuizProgress() {
+            try {
+                localStorage.removeItem(QUIZ_STORAGE_KEY);
+            } catch (e) {
+                // abaikan
+            }
+        }
+
+        // ============================================================
         //  DOM REFS
         // ============================================================
         const homePage = document.getElementById('homePage');
@@ -1651,6 +1692,9 @@
             requestAnimationFrame(() => {
                 quizPage.style.animation = 'fadeSlide 0.4s ease forwards';
             });
+
+            // Auto save: posisi soal & jawaban berubah
+            saveQuizProgress();
         }
 
         function nextQuestion() {
@@ -1780,6 +1824,9 @@
             // Trigger confetti & hearts
             launchConfetti();
             launchEndHearts();
+
+            // Auto save: quiz selesai dijawab, sudah di halaman akhir
+            saveQuizProgress();
         }
 
         // ============================================================
@@ -1862,6 +1909,9 @@
             const text = encodeURIComponent(buildWaMessage());
             const url = `https://wa.me/${WA_NUMBER}?text=${text}`;
             window.open(url, '_blank');
+
+            // Hapus progress tersimpan — quiz akan mulai dari awal saat dibuka lagi
+            clearQuizProgress();
         }
 
         // ============================================================
@@ -2069,6 +2119,9 @@
         // Auto-resize textarea
         answerInput.addEventListener('input', () => {
             autoResize(answerInput);
+            // Auto save: jawaban sedang diketik
+            answers[currentIndex] = answerInput.value;
+            saveQuizProgress();
         });
 
         // ============================================================
@@ -2087,12 +2140,45 @@
         });
 
         // ============================================================
-        //  INIT: pastikan home tampil
+        //  INIT: pulihkan progress tersimpan (jika ada), atau tampilkan home
         // ============================================================
-        homePage.style.display = 'block';
-        homePage.classList.add('active');
-        quizPage.style.display = 'none';
-        endPage.style.display = 'none';
+        (function initAutoLoad() {
+            const saved = loadQuizProgress();
+
+            if (saved) {
+                // Pulihkan seluruh jawaban
+                for (let i = 0; i < totalQuestions; i++) {
+                    answers[i] = saved.answers[i] || '';
+                }
+                currentIndex = saved.currentIndex;
+
+                if (saved.atEndPage) {
+                    // Terakhir berada di halaman akhir
+                    homePage.classList.remove('active');
+                    homePage.style.display = 'none';
+                    quizPage.classList.remove('active');
+                    quizPage.style.display = 'none';
+                    endPage.classList.add('active');
+                    endPage.style.display = 'block';
+                    return;
+                }
+
+                // Terakhir berada di tengah quiz: lanjutkan dari soal terakhir
+                homePage.classList.remove('active');
+                homePage.style.display = 'none';
+                endPage.style.display = 'none';
+                quizPage.classList.add('active');
+                quizPage.style.display = 'block';
+                renderQuestion(currentIndex);
+                return;
+            }
+
+            // Tidak ada progress tersimpan: tampilkan home seperti biasa
+            homePage.style.display = 'block';
+            homePage.classList.add('active');
+            quizPage.style.display = 'none';
+            endPage.style.display = 'none';
+        })();
 
         console.log('💕 Website siap! Seberapa kenal kamu sama aku?');
     </script>
